@@ -19,10 +19,12 @@
   <meta name="author" content="朱">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
+    <meta name="description" content="镜像的基础管理: *****  docker image ls 镜像名字            #查看镜像列表  docker image rm 镜像名字            #删除镜像 -f强制删除  docker image pull   docker image save   -o  包的名字  镜像名字 #导出镜像  docker image save    -o">
+<meta property="og:type" content="article">
 <meta property="og:title" content="docker命令大全">
 <meta property="og:url" content="http://example.com/2025/05/02/docker%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="有灯就有人">
+<meta property="og:description" content="镜像的基础管理: *****  docker image ls 镜像名字            #查看镜像列表  docker image rm 镜像名字            #删除镜像 -f强制删除  docker image pull   docker image save   -o  包的名字  镜像名字 #导出镜像  docker image save    -o">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-02T09:00:00.000Z">
 <meta property="article:modified_time" content="2025-05-02T09:40:00.000Z">
@@ -221,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          366 字
         
       </span>
     
@@ -232,7 +234,7 @@
         
         
         
-          1 分钟
+          4 分钟
         
       </span>
     
@@ -274,7 +276,68 @@
             
               <div class="markdown-body">
                 
-                
+                <p>镜像的基础管理: *****</p>
+<ul>
+<li><p>docker image ls 镜像名字            #查看镜像列表</p>
+</li>
+<li><p>docker image rm 镜像名字            #删除镜像 -f强制删除</p>
+</li>
+<li><p>docker image pull </p>
+</li>
+<li><p>docker image save   -o  包的名字  镜像名字 #导出镜像</p>
+</li>
+<li><p>docker image save    -o            #指定文件</p>
+</li>
+<li><p>docker image save    &gt;             #到处 通常和-o使用 </p>
+</li>
+<li><p>docker image save -i               #指定了输入文件</p>
+</li>
+<li><p>docker image load  &lt;   镜像名字     #导入镜像 </p>
+</li>
+<li><p>docker rmi 251c1ce49450            #删除特定的 <none> 镜像</p>
+</li>
+<li><p>容器的基础命令: *****</p>
+</li>
+<li><p>docker container create          #创建容器</p>
+</li>
+<li><p>docker container create –name   #指定容器名字            </p>
+</li>
+<li><p>docker container start           #启动容器</p>
+</li>
+<li><p>docker container stop            #关闭容器</p>
+</li>
+<li><p>docker container restart         #重启容器</p>
+</li>
+<li><p>docker container pause           #暂停一个或多个运行中的 Docker 容器</p>
+</li>
+<li><p>docker container unpase          #恢复之前被暂停的 Docker 容器</p>
+</li>
+<li><p>docker container ps              #列出当前运行的 Docker 容器</p>
+</li>
+<li><p>docker container ps -a           #列出所有 Docker 容器</p>
+</li>
+<li><p>docker container ps -l           #显示最近创建的一个容器的信息</p>
+</li>
+<li><p>docker container ps -q           #列出所有正在运行的 Docker 容器的容器 ID</p>
+</li>
+<li><p>docker container run             #用于创建并启动一个新的 Docker 容器</p>
+</li>
+<li><p>docker container run    –name   #用于为新创建的 Docker 容器指定一个名称</p>
+</li>
+<li><p>docker container run    -i       # 命令用于以交互模式启动一个 Docker 容器</p>
+</li>
+<li><p>docker container run    -t       #命令用于为 Docker 容器分配一个伪终端</p>
+</li>
+<li><p>docker container run    -e       # 用于在启动 Docker容器时   通常用于配置或传递参数</p>
+</li>
+<li><p>docker container run  -p 宿主机端口:容器端口 # 将容器内部的端口映射到主机的端口</p>
+</li>
+<li><p>docker container run  -d         # 容器将在后台运行，而不是在当前终端窗口中占用控制权</p>
+</li>
+<li><p>docker container run -w  路径      #着当你在容器内运行命令时，默认的当前目录将是你指定的目录。</p>
+</li>
+</ul>
+
                 
               </div>
             
