@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>mysql-io异常</title>
+    <link href="/2026/01/17/io%E5%BC%82%E5%B8%B8/"/>
+    <url>/2026/01/17/io%E5%BC%82%E5%B8%B8/</url>
+    
+    <content type="html"><![CDATA[<p>1）IO线程异常：connecting&#x2F;no<br>connecting：始终无法实现主从建立连接</p><ul><li>连接地址、端口、用户、密码信息不对可能会导致连接异常；</li><li>防火墙安全策略阻止连接建立、网络通讯配置异常影响连接建立；</li><li>到达数据库服务连接数上限，造成主从连接产生异常；</li></ul><p>⭐⭐⭐出现2003错误⭐⭐⭐<br>Last_IO_Errno: 2003<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#114;&#x65;&#x70;&#108;&#64;&#49;&#48;&#x2e;&#48;&#x2e;&#48;&#x2e;&#53;&#x31;">&#114;&#x65;&#x70;&#108;&#64;&#49;&#48;&#x2e;&#48;&#x2e;&#48;&#x2e;&#53;&#x31;</a>:3306’ - retry-time: 10 retries: 3 message: Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>mysql -urepl -p123456 -h10.0.0.51 -P3306<br>mysql: [Warning] Using a password on the command line interface can be insecure.<br>ERROR 2003 (HY000): Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>###解决办法<br>#先停掉  从数据库<br>stop slave;<br>#进入从数据库<br>reset slave all;                        – 清除主从配置信息<br>#进入从数据库<br>select * from mysql.slave_master_info;  – 显示内容为空<br>#在db02中输入   用户  binlog的位置  同步  </p><p>CHANGE MASTER TO<br>MASTER_HOST&#x3D;’10.0.0.51’,<br>MASTER_PORT&#x3D;3306,<br>MASTER_USER&#x3D;’repl’,<br>MASTER_PASSWORD&#x3D;’123456’,<br>MASTER_LOG_FILE&#x3D;’mysql-bin.000035’,    — 同步位置获取正确<br>MASTER_LOG_POS&#x3D;357,                    — 同步位置获取正确<br>MASTER_CONNECT_RETRY&#x3D;10;</p><p>mysql&gt; start slave ;       —启动一下<br>mysql&gt; show slave status\G;  —查看一下<br>⭐⭐⭐连接数自己该多少自己看着办⭐⭐⭐<br>max_connections   — 表示数据库默认会话连接上限（151）（2000-3000-硬件性能高  500-1000-硬件性能低）         #连接数自己该多少自己看着办<br>Last_IO_Errno: 1040<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#x72;&#101;&#x70;&#x6c;&#64;&#x31;&#x30;&#46;&#48;&#46;&#x30;&#46;&#53;&#x31;">&#x72;&#101;&#x70;&#x6c;&#64;&#x31;&#x30;&#46;&#48;&#46;&#x30;&#46;&#53;&#x31;</a>:3307’ - retry-time: 10 retries: 1 message: Too many connections   ###达到连接上限<br>###解决办法:<br>自己改达到连接上限</p><h2 id="IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）"><a href="#IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）" class="headerlink" title="IO线程异常no：不能接收binlog 不能保存binlogIO线程异常：可能导致异常原因：- IO线程在请求日志信息失败，有可能日志信息被无意清理了；- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）"></a>IO线程异常<br>no：不能接收binlog 不能保存binlog<br>IO线程异常：<br>可能导致异常原因：<br>- IO线程在请求日志信息失败，有可能日志信息被无意清理了；<br>- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）</h2>]]></content>
+    
+    
+    <categories>
+      
+      <category>运维</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>mysql</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>数据库出现13314</title>
+    <link href="/2026/01/17/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%87%BA%E7%8E%B013314/"/>
+    <url>/2026/01/17/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%87%BA%E7%8E%B013314/</url>
+    
+    <content type="html"><![CDATA[<p>⭐⭐⭐出现13114错误⭐⭐⭐<br>Last_IO_Errno: 13114<br>Last_IO_Error: Got fatal error 1236 from master when reading data from binary log: ‘Could not open log file’<br>恢复主库binlog文件信息<br>⭐⭐⭐出现13117错误⭐⭐⭐<br>Last_IO_Errno: 13117<br>Last_IO_Error: Fatal error: The slave I&#x2F;O thread stops because master and slave have equal MySQL server ids;<br>               these ids must be different for replication to work (or the –replicate-same-server-id option must be used on slave but this does not always make sense; please check the manual before using it).<br>Last_IO_Errno: 13117<br>Last_IO_Error: Fatal error: The slave I&#x2F;O thread stops because master and slave have equal MySQL server UUIDs;<br>               these UUIDs must be different for replication to work.<br>###解决办法:uuid重复了<br>把从数据库删除uuid  \rm -f auto.cnf<br>重新启动一下数据库   会自动生成新的uuid文件</p><p>[root@db02:~]# vim &#x2F;etc&#x2F;my.cnf<br>[mysqld]<br>basedir&#x3D;&#x2F;usr&#x2F;local&#x2F;mysql<br>datadir&#x3D;&#x2F;data&#x2F;3306&#x2F;data<br>socket&#x3D;&#x2F;tmp&#x2F;mysql.sock<br>server_id&#x3D;52</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>运维</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>mysql</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>docker命令大全</title>
+    <link href="/2025/05/02/docker%E5%91%BD%E4%BB%A4/"/>
+    <url>/2025/05/02/docker%E5%91%BD%E4%BB%A4/</url>
+    
+    <content type="html"><![CDATA[<p>镜像的基础管理: *****</p><ul><li><p>docker image ls 镜像名字            #查看镜像列表</p></li><li><p>docker image rm 镜像名字            #删除镜像 -f强制删除</p></li><li><p>docker image pull </p></li><li><p>docker image save   -o  包的名字  镜像名字 #导出镜像</p></li><li><p>docker image save    -o            #指定文件</p></li><li><p>docker image save    &gt;             #到处 通常和-o使用 </p></li><li><p>docker image save -i               #指定了输入文件</p></li><li><p>docker image load  &lt;   镜像名字     #导入镜像 </p></li><li><p>docker rmi 251c1ce49450            #删除特定的 <none> 镜像</p></li><li><p>容器的基础命令: *****</p></li><li><p>docker container create          #创建容器</p></li><li><p>docker container create –name   #指定容器名字            </p></li><li><p>docker container start           #启动容器</p></li><li><p>docker container stop            #关闭容器</p></li><li><p>docker container restart         #重启容器</p></li><li><p>docker container pause           #暂停一个或多个运行中的 Docker 容器</p></li><li><p>docker container unpase          #恢复之前被暂停的 Docker 容器</p></li><li><p>docker container ps              #列出当前运行的 Docker 容器</p></li><li><p>docker container ps -a           #列出所有 Docker 容器</p></li><li><p>docker container ps -l           #显示最近创建的一个容器的信息</p></li><li><p>docker container ps -q           #列出所有正在运行的 Docker 容器的容器 ID</p></li><li><p>docker container run             #用于创建并启动一个新的 Docker 容器</p></li><li><p>docker container run    –name   #用于为新创建的 Docker 容器指定一个名称</p></li><li><p>docker container run    -i       # 命令用于以交互模式启动一个 Docker 容器</p></li><li><p>docker container run    -t       #命令用于为 Docker 容器分配一个伪终端</p></li><li><p>docker container run    -e       # 用于在启动 Docker容器时   通常用于配置或传递参数</p></li><li><p>docker container run  -p 宿主机端口:容器端口 # 将容器内部的端口映射到主机的端口</p></li><li><p>docker container run  -d         # 容器将在后台运行，而不是在当前终端窗口中占用控制权</p></li><li><p>docker container run -w  路径      #着当你在容器内运行命令时，默认的当前目录将是你指定的目录。</p></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>容器</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>容器</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  
+</search>
