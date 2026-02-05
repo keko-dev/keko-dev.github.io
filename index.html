@@ -103,14 +103,56 @@
 <li>防火墙安全策略阻止连接建立、网络通讯配置异常影响连接建立；</li>
 <li>到达数据库服务连接数上限，造成主从连接产生异常；</li>
 </ul>
-<p>⭐⭐⭐出现2003错误⭐⭐⭐<br>Last_IO_Errno: 2003<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#x72;&#x65;&#x70;&#108;&#x40;&#49;&#48;&#x2e;&#x30;&#x2e;&#48;&#46;&#x35;&#x31;">&#x72;&#x65;&#x70;&#108;&#x40;&#49;&#48;&#x2e;&#x30;&#x2e;&#48;&#46;&#x35;&#x31;</a>:3306’ - retry-time: 10 retries: 3 message: Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>mysql -urepl -p123456 -h10.0.0.51 -P3306<br>mysql: [Warning] Using a password on the command line interface can be insecure.<br>ERROR 2003 (HY000): Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>###解决办法<br>#先停掉  从数据库<br>stop slave;<br>#进入从数据库<br>reset slave all;                        – 清除主从配置信息<br>#进入从数据库<br>select * from mysql.slave_master_info;  – 显示内容为空<br>#在db02中输入   用户  binlog的位置  同步  </p>
+<p>⭐⭐⭐出现2003错误⭐⭐⭐<br>Last_IO_Errno: 2003<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#114;&#101;&#112;&#108;&#x40;&#49;&#x30;&#x2e;&#x30;&#46;&#x30;&#46;&#x35;&#49;">&#114;&#101;&#112;&#108;&#x40;&#49;&#x30;&#x2e;&#x30;&#46;&#x30;&#46;&#x35;&#49;</a>:3306’ - retry-time: 10 retries: 3 message: Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>mysql -urepl -p123456 -h10.0.0.51 -P3306<br>mysql: [Warning] Using a password on the command line interface can be insecure.<br>ERROR 2003 (HY000): Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>###解决办法<br>#先停掉  从数据库<br>stop slave;<br>#进入从数据库<br>reset slave all;                        – 清除主从配置信息<br>#进入从数据库<br>select * from mysql.slave_master_info;  – 显示内容为空<br>#在db02中输入   用户  binlog的位置  同步  </p>
 <p>CHANGE MASTER TO<br>MASTER_HOST&#x3D;’10.0.0.51’,<br>MASTER_PORT&#x3D;3306,<br>MASTER_USER&#x3D;’repl’,<br>MASTER_PASSWORD&#x3D;’123456’,<br>MASTER_LOG_FILE&#x3D;’mysql-bin.000035’,    — 同步位置获取正确<br>MASTER_LOG_POS&#x3D;357,                    — 同步位置获取正确<br>MASTER_CONNECT_RETRY&#x3D;10;</p>
-<p>mysql&gt; start slave ;       —启动一下<br>mysql&gt; show slave status\G;  —查看一下<br>⭐⭐⭐连接数自己该多少自己看着办⭐⭐⭐<br>max_connections   — 表示数据库默认会话连接上限（151）（2000-3000-硬件性能高  500-1000-硬件性能低）         #连接数自己该多少自己看着办<br>Last_IO_Errno: 1040<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#x72;&#101;&#112;&#108;&#x40;&#x31;&#48;&#x2e;&#x30;&#46;&#48;&#46;&#53;&#x31;">&#x72;&#101;&#112;&#108;&#x40;&#x31;&#48;&#x2e;&#x30;&#46;&#48;&#46;&#53;&#x31;</a>:3307’ - retry-time: 10 retries: 1 message: Too many connections   ###达到连接上限<br>###解决办法:<br>自己改达到连接上限</p>
+<p>mysql&gt; start slave ;       —启动一下<br>mysql&gt; show slave status\G;  —查看一下<br>⭐⭐⭐连接数自己该多少自己看着办⭐⭐⭐<br>max_connections   — 表示数据库默认会话连接上限（151）（2000-3000-硬件性能高  500-1000-硬件性能低）         #连接数自己该多少自己看着办<br>Last_IO_Errno: 1040<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#114;&#x65;&#x70;&#x6c;&#x40;&#49;&#48;&#x2e;&#x30;&#x2e;&#x30;&#x2e;&#x35;&#x31;">&#114;&#x65;&#x70;&#x6c;&#x40;&#49;&#48;&#x2e;&#x30;&#x2e;&#x30;&#x2e;&#x35;&#x31;</a>:3307’ - retry-time: 10 retries: 1 message: Too many connections   ###达到连接上限<br>###解决办法:<br>自己改达到连接上限</p>
 <h2 id="IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）"><a href="#IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）" class="headerlink" title="IO线程异常no：不能接收binlog 不能保存binlogIO线程异常：可能导致异常原因：- IO线程在请求日志信息失败，有可能日志信息被无意清理了；- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）"></a>IO线程异常<br>no：不能接收binlog 不能保存binlog<br>IO线程异常：<br>可能导致异常原因：<br>- IO线程在请求日志信息失败，有可能日志信息被无意清理了；<br>- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）</h2>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2026/02/06/%E8%BF%90%E7%BB%B4/" data-id="cml9dudf900002sp29ldo19qf" data-title="mysql-io异常" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2026/02/06/%E8%BF%90%E7%BB%B4/" data-id="cml9e7ns100016hp2fn4b93h3" data-title="mysql-io异常" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-数据库出现13314" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/02/05/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%87%BA%E7%8E%B013314/" class="article-date">
+  <time class="dt-published" datetime="2026-02-05T11:45:59.000Z" itemprop="datePublished">2026-02-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/02/05/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%87%BA%E7%8E%B013314/">数据库出现13314</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>⭐⭐⭐出现13114错误⭐⭐⭐<br>Last_IO_Errno: 13114<br>Last_IO_Error: Got fatal error 1236 from master when reading data from binary log: ‘Could not open log file’<br>恢复主库binlog文件信息<br>⭐⭐⭐出现13117错误⭐⭐⭐<br>Last_IO_Errno: 13117<br>Last_IO_Error: Fatal error: The slave I&#x2F;O thread stops because master and slave have equal MySQL server ids;<br>               these ids must be different for replication to work (or the –replicate-same-server-id option must be used on slave but this does not always make sense; please check the manual before using it).<br>Last_IO_Errno: 13117<br>Last_IO_Error: Fatal error: The slave I&#x2F;O thread stops because master and slave have equal MySQL server UUIDs;<br>               these UUIDs must be different for replication to work.<br>###解决办法:uuid重复了<br>把从数据库删除uuid  \rm -f auto.cnf<br>重新启动一下数据库   会自动生成新的uuid文件</p>
+<p>[root@db02:~]# vim &#x2F;etc&#x2F;my.cnf<br>[mysqld]<br>basedir&#x3D;&#x2F;usr&#x2F;local&#x2F;mysql<br>datadir&#x3D;&#x2F;data&#x2F;3306&#x2F;data<br>socket&#x3D;&#x2F;tmp&#x2F;mysql.sock<br>server_id&#x3D;52</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2026/02/05/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%87%BA%E7%8E%B013314/" data-id="cml9e7nrr00006hp2dfej1inj" data-title="数据库出现13314" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -177,6 +219,10 @@
         
           <li>
             <a href="/2026/02/06/%E8%BF%90%E7%BB%B4/">mysql-io异常</a>
+          </li>
+        
+          <li>
+            <a href="/2026/02/05/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%87%BA%E7%8E%B013314/">数据库出现13314</a>
           </li>
         
       </ul>
