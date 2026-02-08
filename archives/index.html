@@ -342,7 +342,7 @@
 </div>
 
 <script>
-// 软萌小巧猫咪样式（适配16px，无乱码）
+// 软萌小巧猫咪样式（适配12px，无乱码）
 const catPaws = [
   '˚‧º·(ฅωฅ)‧º·˚',
   '╭˚ʚෆɞ˚╮',
@@ -352,37 +352,37 @@ const catPaws = [
   'ヽ(=^･ω･^=)丿',
   '๑˃̵ᴗ˂̵๑'
 ];
-  document.addEventListener('DOMContentLoaded', function() {
-    document.addEventListener('click', function(e) {
-      let paw = document.createElement('span');
-      paw.innerText = catPaws[Math.floor(Math.random() * catPaws.length)];
-      
-      // 核心样式
-      paw.style.position = 'fixed';
-      paw.style.fontSize = '12px';
-      paw.style.color = '#f997b0';
-      paw.style.left = (e.clientX - 6) + 'px';
-      paw.style.top = (e.clientY - 86 + 'px';
-      paw.style.zIndex = '999999';
-      paw.style.pointerEvents = 'none';
-      paw.style.transform = 'scale(0)';
-      paw.style.animation = 'paw-animation 0.8s ease-out forwards';
-      
-      // 动画样式
-      const style = document.createElement('style');
-      style.textContent = `
-        @keyframes paw-animation {
-          0% { transform: scale(0) rotate(0deg); opacity: 1; }
-          50% { transform: scale(1.2) rotate(10deg); opacity: 0.8; }
-          100% { transform: scale(1.5) rotate(0deg); opacity: 0; }
-        }
-      `;
-      document.head.appendChild(style);
-      
-      document.body.appendChild(paw);
-      setTimeout(() => paw.remove(), 600);
-    });
+document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('click', function(e) {
+    let paw = document.createElement('span');
+    paw.innerText = catPaws[Math.floor(Math.random() * catPaws.length)];
+    
+    // 核心样式（12px极致小巧版）
+    paw.style.position = 'fixed';
+    paw.style.fontSize = '12px'; // 极致小巧尺寸
+    paw.style.color = '#f997b0'; // 温柔粉
+    paw.style.left = (e.clientX - 6) + 'px'; // 12px的一半，居中显示
+    paw.style.top = (e.clientY - 6) + 'px'; // 修复语法错误：补全括号，修正偏移值
+    paw.style.zIndex = '999999'; // 最上层显示
+    paw.style.pointerEvents = 'none'; // 不遮挡点击
+    paw.style.transform = 'scale(0)';
+    paw.style.animation = 'paw-animation 0.6s ease-out forwards'; // 缩短动画更轻盈
+    
+    // 适配12px的动画（缩放比例更小）
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes paw-animation {
+        0% { transform: scale(0) rotate(0deg); opacity: 1; }
+        50% { transform: scale(1.1) rotate(6deg); opacity: 0.8; } // 小尺寸适配
+        100% { transform: scale(1.2) rotate(0deg); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(paw);
+    setTimeout(() => paw.remove(), 600); // 同步缩短删除时间
   });
+});
 </script>
 
   </footer>
