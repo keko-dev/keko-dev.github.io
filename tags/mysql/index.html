@@ -326,15 +326,14 @@
 
 <!-- 猫抓特效脚本（纯文字无乱码版） -->
 <script>
-  // 纯文字猫爪样式（无任何 emoji）
-  const catPaws = [
-    'ꈍ◡ꈍ=͟͟͞͞������', // 带爱心猫爪
-    'ฅ˙Ⱉ˙ฅ',       // 猫咪脸
-    '(๑˃̵ᴗ˂̵)و',   // 小爪子
-    '=^•ω•^=',      // 猫咪爪
-    '∽∽∽∽∽∽∽'      // 纯符号爪印（彻底无 emoji）
-  ];
-
+// 纯 ASCII 猫爪样式（彻底无乱码）
+const catPaws = [
+  '(*^ω^)', // 猫脸
+  '(=｀ω´=)', // 猫爪
+  '^=• ω •=^', // 猫爪
+  '>^_^<', // 猫脸
+  '~~~*~~~' // 爪印
+];
   document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', function(e) {
       let paw = document.createElement('span');
