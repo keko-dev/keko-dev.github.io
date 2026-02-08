@@ -291,38 +291,35 @@
   
   
 </div>
-<!-- 猫抓特效脚本（无 emoji 乱码版） -->
+
+<!-- 猫抓特效脚本（纯文字无乱码版） -->
 <script>
-  // 定义多个文字猫爪样式，每次点击随机出现
+  // 纯文字猫爪样式（无任何 emoji）
   const catPaws = [
     'ꈍ◡ꈍ=͟͟͞͞������', // 带爱心猫爪
     'ฅ˙Ⱉ˙ฅ',       // 猫咪脸
     '(๑˃̵ᴗ˂̵)و',   // 小爪子
     '=^•ω•^=',      // 猫咪爪
-    '∽∽∽������∽∽∽'     // 兼容版爪印（尽量保留������）
+    '∽∽∽∽∽∽∽'      // 纯符号爪印（彻底无 emoji）
   ];
 
-  // 页面加载完成后绑定点击事件
   document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', function(e) {
-      // 创建猫爪元素
       let paw = document.createElement('span');
-      // 随机选一个猫爪样式
       paw.innerText = catPaws[Math.floor(Math.random() * catPaws.length)];
       
-      // 核心样式（避免依赖外部 CSS）
+      // 核心样式
       paw.style.position = 'fixed';
       paw.style.fontSize = '28px';
-      paw.style.color = '#ff6699'; // 粉色（可改成 #f687b3 更浅）
-      paw.style.left = (e.clientX - 14) + 'px'; // 居中显示
+      paw.style.color = '#ff6699';
+      paw.style.left = (e.clientX - 14) + 'px';
       paw.style.top = (e.clientY - 14) + 'px';
-      paw.style.zIndex = '999999'; // 最上层显示
-      paw.style.pointerEvents = 'none'; // 不遮挡点击
+      paw.style.zIndex = '999999';
+      paw.style.pointerEvents = 'none';
       paw.style.transform = 'scale(0)';
-      // 缩放+旋转动画
       paw.style.animation = 'paw-animation 0.8s ease-out forwards';
       
-      // 把动画样式注入页面
+      // 动画样式
       const style = document.createElement('style');
       style.textContent = `
         @keyframes paw-animation {
@@ -333,10 +330,7 @@
       `;
       document.head.appendChild(style);
       
-      // 添加到页面
       document.body.appendChild(paw);
-      
-      // 动画结束后删除元素（不占内存）
       setTimeout(() => paw.remove(), 800);
     });
   });
