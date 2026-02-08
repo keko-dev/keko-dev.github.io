@@ -4,8 +4,31 @@
 <html lang="zh-CN" data-default-color-scheme=auto>
 
 
-
 <head>
+<head>
+  <!-- 猫抓特效样式 -->
+  <style>
+    .cat-scratch {
+      position: fixed !important;
+      font-size: 30px !important;
+      color: #ff6699 !important;
+      transform: scale(0);
+      animation: scratch-animation 0.8s ease-out;
+      pointer-events: none;
+      z-index: 999999 !important;
+    }
+    @keyframes scratch-animation {
+      0% { transform: scale(0) rotate(0deg); opacity: 1; }
+      50% { transform: scale(1.5) rotate(15deg); opacity: 0.8; }
+      100% { transform: scale(2) rotate(0deg); opacity: 0; }
+    }
+  </style>
+
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <!-- 其他原有代码 -->
+<meta name="generator" content="Hexo 7.3.0"></head>
+
   <meta charset="UTF-8">
 
   <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
@@ -69,7 +92,7 @@
 
 
   
-<link rel="stylesheet" href="/*%20+%EF%BF%BDyH7%0F%20*/%0A.cat-scratch%20%7B%0A%20%20position:%20fixed;%0A%20%20font-size:%2024px;%0A%20%20color:%20#ff9966;%0A%20%20transform:%20scale(0);%0A%20%20animation:%20scratch-animation%200.8s%20ease-out;%0A%20%20pointer-events:%20none;%0A%20%20z-index:%2099999;%0A%7D%0A@keyframes%20scratch-animation%20%7B%0A%20%200%25%20%7B%20transform:%20scale(0)%20rotate(0deg);%20opacity:%201;%20%7D%0A%20%2050%25%20%7B%20transform:%20scale(1.2)%20rotate(10deg);%20opacity:%200.8;%20%7D%0A%20%20100%25%20%7B%20transform:%20scale(1.5)%20rotate(0deg);%20opacity:%200;%20%7D%0A%7D%0A.css">
+<link rel="stylesheet" href="/.cat-scratch%20%7B%0A%20%20position:%20fixed%20!important;%20%20/*%20%EF%BF%BD%20!important%20:6%1FH%20*/%0A%20%20font-size:%2030px%20!important;%20%20/*%20%3E'%00%EF%BF%BD%0C%EF%BF%BD%EF%BF%BD%13%0B0%20*/%0A%20%20color:%20#ff6699%20!important;%20%20%20/*%20%EF%BF%BDr%EF%BF%BD%3E%3C%20*/%0A%20%20transform:%20scale(0);%0A%20%20animation:%20scratch-animation%200.8s%20ease-out;%0A%20%20pointer-events:%20none;%0A%20%20z-index:%20999999%20!important;%20%20/*%20%EF%BF%BD%EF%BF%BDB%EF%BF%BD%0C%7FM%EF%BF%BDn!%20*/%0A%7D%0A@keyframes%20scratch-animation%20%7B%0A%20%200%25%20%7B%20transform:%20scale(0)%20rotate(0deg);%20opacity:%201;%20%7D%0A%20%2050%25%20%7B%20transform:%20scale(1.5)%20rotate(15deg);%20opacity:%200.8;%20%7D%0A%20%20100%25%20%7B%20transform:%20scale(2)%20rotate(0deg);%20opacity:%200;%20%7D%0A%7D%0A.css">
 
 
 
@@ -89,7 +112,7 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+</head>
 
 
 <body>
@@ -286,9 +309,9 @@
 <li>防火墙安全策略阻止连接建立、网络通讯配置异常影响连接建立；</li>
 <li>到达数据库服务连接数上限，造成主从连接产生异常；</li>
 </ul>
-<p>⭐⭐⭐出现2003错误⭐⭐⭐<br>Last_IO_Errno: 2003<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#114;&#x65;&#x70;&#108;&#64;&#49;&#x30;&#x2e;&#48;&#x2e;&#48;&#46;&#x35;&#49;">&#114;&#x65;&#x70;&#108;&#64;&#49;&#x30;&#x2e;&#48;&#x2e;&#48;&#46;&#x35;&#49;</a>:3306’ - retry-time: 10 retries: 3 message: Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>mysql -urepl -p123456 -h10.0.0.51 -P3306<br>mysql: [Warning] Using a password on the command line interface can be insecure.<br>ERROR 2003 (HY000): Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>###解决办法<br>#先停掉  从数据库<br>stop slave;<br>#进入从数据库<br>reset slave all;                        – 清除主从配置信息<br>#进入从数据库<br>select * from mysql.slave_master_info;  – 显示内容为空<br>#在db02中输入   用户  binlog的位置  同步  </p>
+<p>⭐⭐⭐出现2003错误⭐⭐⭐<br>Last_IO_Errno: 2003<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#114;&#x65;&#112;&#108;&#64;&#49;&#48;&#46;&#x30;&#x2e;&#48;&#x2e;&#x35;&#x31;">&#114;&#x65;&#112;&#108;&#64;&#49;&#48;&#46;&#x30;&#x2e;&#48;&#x2e;&#x35;&#x31;</a>:3306’ - retry-time: 10 retries: 3 message: Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>mysql -urepl -p123456 -h10.0.0.51 -P3306<br>mysql: [Warning] Using a password on the command line interface can be insecure.<br>ERROR 2003 (HY000): Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>###解决办法<br>#先停掉  从数据库<br>stop slave;<br>#进入从数据库<br>reset slave all;                        – 清除主从配置信息<br>#进入从数据库<br>select * from mysql.slave_master_info;  – 显示内容为空<br>#在db02中输入   用户  binlog的位置  同步  </p>
 <p>CHANGE MASTER TO<br>MASTER_HOST&#x3D;’10.0.0.51’,<br>MASTER_PORT&#x3D;3306,<br>MASTER_USER&#x3D;’repl’,<br>MASTER_PASSWORD&#x3D;’123456’,<br>MASTER_LOG_FILE&#x3D;’mysql-bin.000035’,    — 同步位置获取正确<br>MASTER_LOG_POS&#x3D;357,                    — 同步位置获取正确<br>MASTER_CONNECT_RETRY&#x3D;10;</p>
-<p>mysql&gt; start slave ;       —启动一下<br>mysql&gt; show slave status\G;  —查看一下<br>⭐⭐⭐连接数自己该多少自己看着办⭐⭐⭐<br>max_connections   — 表示数据库默认会话连接上限（151）（2000-3000-硬件性能高  500-1000-硬件性能低）         #连接数自己该多少自己看着办<br>Last_IO_Errno: 1040<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#114;&#101;&#x70;&#108;&#x40;&#49;&#48;&#x2e;&#x30;&#46;&#x30;&#46;&#x35;&#49;">&#114;&#101;&#x70;&#108;&#x40;&#49;&#48;&#x2e;&#x30;&#46;&#x30;&#46;&#x35;&#49;</a>:3307’ - retry-time: 10 retries: 1 message: Too many connections   ###达到连接上限<br>###解决办法:<br>自己改达到连接上限</p>
+<p>mysql&gt; start slave ;       —启动一下<br>mysql&gt; show slave status\G;  —查看一下<br>⭐⭐⭐连接数自己该多少自己看着办⭐⭐⭐<br>max_connections   — 表示数据库默认会话连接上限（151）（2000-3000-硬件性能高  500-1000-硬件性能低）         #连接数自己该多少自己看着办<br>Last_IO_Errno: 1040<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#114;&#x65;&#x70;&#108;&#x40;&#49;&#48;&#46;&#48;&#x2e;&#48;&#x2e;&#x35;&#49;">&#114;&#x65;&#x70;&#108;&#x40;&#49;&#48;&#46;&#48;&#x2e;&#48;&#x2e;&#x35;&#49;</a>:3307’ - retry-time: 10 retries: 1 message: Too many connections   ###达到连接上限<br>###解决办法:<br>自己改达到连接上限</p>
 <h2 id="IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）"><a href="#IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）" class="headerlink" title="IO线程异常no：不能接收binlog 不能保存binlogIO线程异常：可能导致异常原因：- IO线程在请求日志信息失败，有可能日志信息被无意清理了；- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）"></a>IO线程异常<br>no：不能接收binlog 不能保存binlog<br>IO线程异常：<br>可能导致异常原因：<br>- IO线程在请求日志信息失败，有可能日志信息被无意清理了；<br>- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）</h2>
                 
               </div>
@@ -493,6 +516,38 @@
   
   
 </div>
+<!-- 猫抓特效脚本 -->
+<script>
+  document.addEventListener('click', function(e) {
+    let scratch = document.createElement('span');
+    scratch.className = 'cat-scratch';
+    scratch.innerText = ꈍ◡ꈍ=͟͟͞͞������''; // 用星号代替 emoji
+    scratch.style.left = e.clientX + 'px';
+    scratch.style.top = e.clientY + 'px';
+    // 直接在这里写样式，避免依赖外部 CSS
+    scratch.style.position = 'fixed';
+    scratch.style.fontSize = '30px';
+    scratch.style.color = '#ff6699';
+    scratch.style.transform = 'scale(0)';
+    scratch.style.animation = 'scratch-animation 0.8s ease-out';
+    scratch.style.pointerEvents = 'none';
+    scratch.style.zIndex = '999999';
+    document.body.appendChild(scratch);
+
+    // 把动画样式也写在这里
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes scratch-animation {
+        0% { transform: scale(0) rotate(0deg); opacity: 1; }
+        50% { transform: scale(1.5) rotate(15deg); opacity: 0.8; }
+        100% { transform: scale(2) rotate(0deg); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    setTimeout(() => scratch.remove(), 1000);
+  });
+</script>
 
   </footer>
 
@@ -640,7 +695,25 @@
 
 
   
-<script src="/document.addEventListener('click',%20function(e)%20%7B%0A%20%20const%20scratchChars%20=%20%5B'%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD',%20'%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD',%20'%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD',%20'%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD'%5D;%0A%20%20const%20randomChar%20=%20scratchChars%5BMath.floor(Math.random()%20*%20scratchChars.length)%5D;%0A%20%20const%20scratch%20=%20document.createElement('div');%0A%20%20scratch.classList.add('cat-scratch');%0A%20%20scratch.textContent%20=%20randomChar;%0A%20%20scratch.style.left%20=%20e.clientX%20-%2012%20+%20'px';%0A%20%20scratch.style.top%20=%20e.clientY%20-%2012%20+%20'px';%0A%20%20document.body.appendChild(scratch);%0A%20%20setTimeout(()%20=%3E%20scratch.remove(),%20800);%0A%7D);%0A.js"></script>
+<script src="// 等页面完全加载后再执行（避免加载顺序问题）
+window.onload = function() {
+  document.addEventListener('click', function(e) {
+    // 手动创建元素，简化逻辑
+    let scratch = document.createElement('span');
+    scratch.className = 'cat-scratch';
+    scratch.innerText = '������';  // 固定显示爪印，先排除随机问题
+    // 定位到点击位置（简化计算）
+    scratch.style.left = e.clientX + 'px';
+    scratch.style.top = e.clientY + 'px';
+    // 强制添加到 body 最外层
+    document.body.appendChild(scratch);
+    // 1秒后删除
+    setTimeout(() => {
+      scratch.remove();
+    }, 1000);
+  });
+};
+.js"></script>
 
 
 
