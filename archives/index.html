@@ -366,24 +366,25 @@ document.addEventListener('DOMContentLoaded', function() {
     paw.style.zIndex = '999999';
     paw.style.pointerEvents = 'none';
     paw.style.transform = 'scale(0)';
-    // 延长动画时长到1.5秒（原0.6秒），停留更久
-    paw.style.animation = 'paw-animation 1.5s ease-out forwards';
+    // 总动画时长调到2.5秒（足够久）
+    paw.style.animation = 'paw-animation 2.5s ease-out forwards';
     
-    // 适配长时长的动画（放慢消失速度）
+    // 动画节奏：先快速显示 → 停留1秒 → 慢慢消失
     const style = document.createElement('style');
     style.textContent = `
       @keyframes paw-animation {
-        0% { transform: scale(0) rotate(0deg); opacity: 1; }
-        30% { transform: scale(1.1) rotate(6deg); opacity: 1; } // 保持清晰显示
-        70% { transform: scale(1.1) rotate(6deg); opacity: 0.8; } // 慢一点消失
+        0% { transform: scale(0) rotate(0deg); opacity: 0; }
+        10% { transform: scale(1.1) rotate(6deg); opacity: 1; } // 快速显示
+        50% { transform: scale(1.1) rotate(6deg); opacity: 1; } // 停留1秒（10%-50%）
+        90% { transform: scale(1.2) rotate(0deg); opacity: 0.2; } // 慢慢消失
         100% { transform: scale(1.2) rotate(0deg); opacity: 0; }
       }
     `;
     document.head.appendChild(style);
     
     document.body.appendChild(paw);
-    // 同步延长删除时间到1500毫秒（和动画时长一致）
-    setTimeout(() => paw.remove(), 1500);
+    // 删除时间和动画时长一致（2500毫秒）
+    setTimeout(() => paw.remove(), 2500);
   });
 });
 </script>
