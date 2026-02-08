@@ -310,28 +310,31 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 核心样式（12px极致小巧版）
     paw.style.position = 'fixed';
-    paw.style.fontSize = '12px'; // 极致小巧尺寸
-    paw.style.color = '#f997b0'; // 温柔粉
-    paw.style.left = (e.clientX - 6) + 'px'; // 12px的一半，居中显示
-    paw.style.top = (e.clientY - 6) + 'px'; // 修复语法错误：补全括号，修正偏移值
-    paw.style.zIndex = '999999'; // 最上层显示
-    paw.style.pointerEvents = 'none'; // 不遮挡点击
+    paw.style.fontSize = '12px';
+    paw.style.color = '#f997b0';
+    paw.style.left = (e.clientX - 6) + 'px';
+    paw.style.top = (e.clientY - 6) + 'px';
+    paw.style.zIndex = '999999';
+    paw.style.pointerEvents = 'none';
     paw.style.transform = 'scale(0)';
-    paw.style.animation = 'paw-animation 0.6s ease-out forwards'; // 缩短动画更轻盈
+    // 延长动画时长到1.5秒（原0.6秒），停留更久
+    paw.style.animation = 'paw-animation 1.5s ease-out forwards';
     
-    // 适配12px的动画（缩放比例更小）
+    // 适配长时长的动画（放慢消失速度）
     const style = document.createElement('style');
     style.textContent = `
       @keyframes paw-animation {
         0% { transform: scale(0) rotate(0deg); opacity: 1; }
-        50% { transform: scale(1.1) rotate(6deg); opacity: 0.8; } // 小尺寸适配
+        30% { transform: scale(1.1) rotate(6deg); opacity: 1; } // 保持清晰显示
+        70% { transform: scale(1.1) rotate(6deg); opacity: 0.8; } // 慢一点消失
         100% { transform: scale(1.2) rotate(0deg); opacity: 0; }
       }
     `;
     document.head.appendChild(style);
     
     document.body.appendChild(paw);
-    setTimeout(() => paw.remove(), 600); // 同步缩短删除时间
+    // 同步延长删除时间到1500毫秒（和动画时长一致）
+    setTimeout(() => paw.remove(), 1500);
   });
 });
 </script>
