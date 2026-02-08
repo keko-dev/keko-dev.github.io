@@ -327,6 +327,7 @@
   
 </div>
 
+<script>
 // 软萌小巧猫咪样式（适配12px，无乱码）
 const catPaws = [
   '˚‧º·(ฅωฅ)‧º·˚',
@@ -337,24 +338,27 @@ const catPaws = [
   'ヽ(=^･ω･^=)丿',
   '๑˃̵ᴗ˂̵๑'
 ];
-document.addEventListener('DOMContentLoaded', function() {
-  // 绑定全局点击事件，兼容导航链接
-  document.addEventListener('click', function(e) {
+
+// 页面加载完成后立即绑定事件（去掉多余判断）
+window.onload = function() {
+  // 绑定到 document 上，优先级最高，不拦截任何元素
+  document.onclick = function(e) {
+    // 1. 创建猫咪元素（不管点击什么，先创建特效）
     let paw = document.createElement('span');
     paw.innerText = catPaws[Math.floor(Math.random() * catPaws.length)];
     
-    // 核心样式（12px极致小巧版）
+    // 2. 核心样式（12px极致小巧）
     paw.style.position = 'fixed';
     paw.style.fontSize = '12px';
     paw.style.color = '#f997b0';
     paw.style.left = (e.clientX - 6) + 'px';
     paw.style.top = (e.clientY - 6) + 'px';
-    paw.style.zIndex = '999999';
-    paw.style.pointerEvents = 'none';
+    paw.style.zIndex = '999999'; // 最高层级，不被遮挡
+    paw.style.pointerEvents = 'none'; // 不影响后续点击
     paw.style.transform = 'scale(0)';
     paw.style.animation = 'paw-animation 2.5s ease-out forwards';
     
-    // 动画样式（2.5秒长停留）
+    // 3. 动画样式（2.5秒长停留）
     const style = document.createElement('style');
     style.textContent = `
       @keyframes paw-animation {
@@ -367,15 +371,14 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(style);
     
+    // 4. 添加到页面并设置自动删除
     document.body.appendChild(paw);
     setTimeout(() => paw.remove(), 2500);
 
-    // 关键：点击导航链接时，允许正常跳转，不阻止默认行为
-    if (e.target.tagName === 'A' || e.target.closest('a')) {
-      return;
-    }
-  });
-});
+    // 5. 不做任何拦截，让点击的元素正常执行默认行为（跳转/触发事件）
+  };
+};
+</script>
 
   </footer>
 

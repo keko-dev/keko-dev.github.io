@@ -309,9 +309,9 @@
 <li>防火墙安全策略阻止连接建立、网络通讯配置异常影响连接建立；</li>
 <li>到达数据库服务连接数上限，造成主从连接产生异常；</li>
 </ul>
-<p>⭐⭐⭐出现2003错误⭐⭐⭐<br>Last_IO_Errno: 2003<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#114;&#x65;&#112;&#108;&#x40;&#x31;&#48;&#x2e;&#x30;&#46;&#x30;&#46;&#x35;&#49;">&#114;&#x65;&#112;&#108;&#x40;&#x31;&#48;&#x2e;&#x30;&#46;&#x30;&#46;&#x35;&#49;</a>:3306’ - retry-time: 10 retries: 3 message: Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>mysql -urepl -p123456 -h10.0.0.51 -P3306<br>mysql: [Warning] Using a password on the command line interface can be insecure.<br>ERROR 2003 (HY000): Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>###解决办法<br>#先停掉  从数据库<br>stop slave;<br>#进入从数据库<br>reset slave all;                        – 清除主从配置信息<br>#进入从数据库<br>select * from mysql.slave_master_info;  – 显示内容为空<br>#在db02中输入   用户  binlog的位置  同步  </p>
+<p>⭐⭐⭐出现2003错误⭐⭐⭐<br>Last_IO_Errno: 2003<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#x72;&#x65;&#x70;&#x6c;&#x40;&#x31;&#48;&#x2e;&#x30;&#x2e;&#48;&#46;&#53;&#49;">&#x72;&#x65;&#x70;&#x6c;&#x40;&#x31;&#48;&#x2e;&#x30;&#x2e;&#48;&#46;&#53;&#49;</a>:3306’ - retry-time: 10 retries: 3 message: Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>mysql -urepl -p123456 -h10.0.0.51 -P3306<br>mysql: [Warning] Using a password on the command line interface can be insecure.<br>ERROR 2003 (HY000): Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>###解决办法<br>#先停掉  从数据库<br>stop slave;<br>#进入从数据库<br>reset slave all;                        – 清除主从配置信息<br>#进入从数据库<br>select * from mysql.slave_master_info;  – 显示内容为空<br>#在db02中输入   用户  binlog的位置  同步  </p>
 <p>CHANGE MASTER TO<br>MASTER_HOST&#x3D;’10.0.0.51’,<br>MASTER_PORT&#x3D;3306,<br>MASTER_USER&#x3D;’repl’,<br>MASTER_PASSWORD&#x3D;’123456’,<br>MASTER_LOG_FILE&#x3D;’mysql-bin.000035’,    — 同步位置获取正确<br>MASTER_LOG_POS&#x3D;357,                    — 同步位置获取正确<br>MASTER_CONNECT_RETRY&#x3D;10;</p>
-<p>mysql&gt; start slave ;       —启动一下<br>mysql&gt; show slave status\G;  —查看一下<br>⭐⭐⭐连接数自己该多少自己看着办⭐⭐⭐<br>max_connections   — 表示数据库默认会话连接上限（151）（2000-3000-硬件性能高  500-1000-硬件性能低）         #连接数自己该多少自己看着办<br>Last_IO_Errno: 1040<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#x72;&#101;&#112;&#108;&#64;&#49;&#48;&#46;&#48;&#x2e;&#48;&#46;&#53;&#x31;">&#x72;&#101;&#112;&#108;&#64;&#49;&#48;&#46;&#48;&#x2e;&#48;&#46;&#53;&#x31;</a>:3307’ - retry-time: 10 retries: 1 message: Too many connections   ###达到连接上限<br>###解决办法:<br>自己改达到连接上限</p>
+<p>mysql&gt; start slave ;       —启动一下<br>mysql&gt; show slave status\G;  —查看一下<br>⭐⭐⭐连接数自己该多少自己看着办⭐⭐⭐<br>max_connections   — 表示数据库默认会话连接上限（151）（2000-3000-硬件性能高  500-1000-硬件性能低）         #连接数自己该多少自己看着办<br>Last_IO_Errno: 1040<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#114;&#101;&#112;&#108;&#64;&#49;&#x30;&#x2e;&#x30;&#x2e;&#48;&#46;&#x35;&#x31;">&#114;&#101;&#112;&#108;&#64;&#49;&#x30;&#x2e;&#x30;&#x2e;&#48;&#46;&#x35;&#x31;</a>:3307’ - retry-time: 10 retries: 1 message: Too many connections   ###达到连接上限<br>###解决办法:<br>自己改达到连接上限</p>
 <h2 id="IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）"><a href="#IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）" class="headerlink" title="IO线程异常no：不能接收binlog 不能保存binlogIO线程异常：可能导致异常原因：- IO线程在请求日志信息失败，有可能日志信息被无意清理了；- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）"></a>IO线程异常<br>no：不能接收binlog 不能保存binlog<br>IO线程异常：<br>可能导致异常原因：<br>- IO线程在请求日志信息失败，有可能日志信息被无意清理了；<br>- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）</h2>
                 
               </div>
@@ -517,6 +517,7 @@
   
 </div>
 
+<script>
 // 软萌小巧猫咪样式（适配12px，无乱码）
 const catPaws = [
   '˚‧º·(ฅωฅ)‧º·˚',
@@ -527,24 +528,27 @@ const catPaws = [
   'ヽ(=^･ω･^=)丿',
   '๑˃̵ᴗ˂̵๑'
 ];
-document.addEventListener('DOMContentLoaded', function() {
-  // 绑定全局点击事件，兼容导航链接
-  document.addEventListener('click', function(e) {
+
+// 页面加载完成后立即绑定事件（去掉多余判断）
+window.onload = function() {
+  // 绑定到 document 上，优先级最高，不拦截任何元素
+  document.onclick = function(e) {
+    // 1. 创建猫咪元素（不管点击什么，先创建特效）
     let paw = document.createElement('span');
     paw.innerText = catPaws[Math.floor(Math.random() * catPaws.length)];
     
-    // 核心样式（12px极致小巧版）
+    // 2. 核心样式（12px极致小巧）
     paw.style.position = 'fixed';
     paw.style.fontSize = '12px';
     paw.style.color = '#f997b0';
     paw.style.left = (e.clientX - 6) + 'px';
     paw.style.top = (e.clientY - 6) + 'px';
-    paw.style.zIndex = '999999';
-    paw.style.pointerEvents = 'none';
+    paw.style.zIndex = '999999'; // 最高层级，不被遮挡
+    paw.style.pointerEvents = 'none'; // 不影响后续点击
     paw.style.transform = 'scale(0)';
     paw.style.animation = 'paw-animation 2.5s ease-out forwards';
     
-    // 动画样式（2.5秒长停留）
+    // 3. 动画样式（2.5秒长停留）
     const style = document.createElement('style');
     style.textContent = `
       @keyframes paw-animation {
@@ -557,15 +561,14 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(style);
     
+    // 4. 添加到页面并设置自动删除
     document.body.appendChild(paw);
     setTimeout(() => paw.remove(), 2500);
 
-    // 关键：点击导航链接时，允许正常跳转，不阻止默认行为
-    if (e.target.tagName === 'A' || e.target.closest('a')) {
-      return;
-    }
-  });
-});
+    // 5. 不做任何拦截，让点击的元素正常执行默认行为（跳转/触发事件）
+  };
+};
+</script>
 
   </footer>
 
