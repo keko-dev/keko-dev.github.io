@@ -307,7 +307,6 @@
 const catPaws = [
   '˚‧º·(ฅωฅ)‧º·˚',
   '╭˚ʚෆɞ˚╮',
-  'ʚ������ɞ',
   '(๑•̀ᴗ•́)و ̑̑',
   '=^･ω･^=',
   'ฅ•ω•ฅ',
@@ -321,10 +320,10 @@ const catPaws = [
       
       // 核心样式
       paw.style.position = 'fixed';
-      paw.style.fontSize = '16px';
-      paw.style.color = '#ff6699';
-      paw.style.left = (e.clientX - 8) + 'px';
-      paw.style.top = (e.clientY - 8) + 'px';
+      paw.style.fontSize = '12px';
+      paw.style.color = '#f997b0';
+      paw.style.left = (e.clientX - 6) + 'px';
+      paw.style.top = (e.clientY - 86 + 'px';
       paw.style.zIndex = '999999';
       paw.style.pointerEvents = 'none';
       paw.style.transform = 'scale(0)';
@@ -342,7 +341,7 @@ const catPaws = [
       document.head.appendChild(style);
       
       document.body.appendChild(paw);
-      setTimeout(() => paw.remove(), 800);
+      setTimeout(() => paw.remove(), 600);
     });
   });
 </script>
