@@ -42,21 +42,32 @@
   <meta name="author" content="朱">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="website">
-<meta property="og:title" content="有灯就有人">
-<meta property="og:url" content="http://example.com/index.html">
+    <meta name="description" content="镜像的基础管理: *****  docker image ls 镜像名字            #查看镜像列表  docker image rm 镜像名字            #删除镜像 -f强制删除  docker image pull   docker image save   -o  包的名字  镜像名字 #导出镜像  docker image save    -o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker命令大全">
+<meta property="og:url" content="http://example.com/2025/02/02/docker%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="有灯就有人">
+<meta property="og:description" content="镜像的基础管理: *****  docker image ls 镜像名字            #查看镜像列表  docker image rm 镜像名字            #删除镜像 -f强制删除  docker image pull   docker image save   -o  包的名字  镜像名字 #导出镜像  docker image save    -o">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-02T09:00:00.000Z">
+<meta property="article:modified_time" content="2025-02-02T09:40:00.000Z">
 <meta property="article:author" content="朱">
+<meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>有灯就有人</title>
+  <title>docker命令大全 - 有灯就有人</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
 
@@ -110,7 +121,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 100vh;">
+<div class="header-inner" style="height: 70vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -216,17 +227,53 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="欢迎来到有灯就有人的技术博客"></span>
+            <span id="subtitle" data-typed-text="docker命令大全"></span>
           
         </div>
 
         
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-02 17:00" pubdate>
+          2025年2月2日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          967 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
       </div>
 
-      
-        <div class="scroll-down-bar">
-          <i class="iconfont icon-arrowdown"></i>
-        </div>
       
     </div>
   </div>
@@ -238,392 +285,244 @@
 
   <main>
     
-      <div class="container nopadding-x-md">
-        <div id="board"
-          style="margin-top: 0">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">docker命令大全</h1>
+            
+            
+              <div class="markdown-body">
                 
+                <p>镜像的基础管理: *****</p>
+<ul>
+<li><p>docker image ls 镜像名字            #查看镜像列表</p>
+</li>
+<li><p>docker image rm 镜像名字            #删除镜像 -f强制删除</p>
+</li>
+<li><p>docker image pull </p>
+</li>
+<li><p>docker image save   -o  包的名字  镜像名字 #导出镜像</p>
+</li>
+<li><p>docker image save    -o            #指定文件</p>
+</li>
+<li><p>docker image save    &gt;             #到处 通常和-o使用 </p>
+</li>
+<li><p>docker image save -i               #指定了输入文件</p>
+</li>
+<li><p>docker image load  &lt;   镜像名字     #导入镜像 </p>
+</li>
+<li><p>docker rmi 251c1ce49450            #删除特定的 <none> 镜像</p>
+</li>
+<li><p>容器的基础命令: *****</p>
+</li>
+<li><p>docker container create          #创建容器</p>
+</li>
+<li><p>docker container create –name   #指定容器名字            </p>
+</li>
+<li><p>docker container start           #启动容器</p>
+</li>
+<li><p>docker container stop            #关闭容器</p>
+</li>
+<li><p>docker container restart         #重启容器</p>
+</li>
+<li><p>docker container pause           #暂停一个或多个运行中的 Docker 容器</p>
+</li>
+<li><p>docker container unpase          #恢复之前被暂停的 Docker 容器</p>
+</li>
+<li><p>docker container ps              #列出当前运行的 Docker 容器</p>
+</li>
+<li><p>docker container ps -a           #列出所有 Docker 容器</p>
+</li>
+<li><p>docker container ps -l           #显示最近创建的一个容器的信息</p>
+</li>
+<li><p>docker container ps -q           #列出所有正在运行的 Docker 容器的容器 ID</p>
+</li>
+<li><p>docker container run             #用于创建并启动一个新的 Docker 容器</p>
+</li>
+<li><p>docker container run    –name   #用于为新创建的 Docker 容器指定一个名称</p>
+</li>
+<li><p>docker container run    -i       # 命令用于以交互模式启动一个 Docker 容器</p>
+</li>
+<li><p>docker container run    -t       #命令用于为 Docker 容器分配一个伪终端</p>
+</li>
+<li><p>docker container run    -e       # 用于在启动 Docker容器时   通常用于配置或传递参数</p>
+</li>
+<li><p>docker container run  -p 宿主机端口:容器端口 # 将容器内部的端口映射到主机的端口</p>
+</li>
+<li><p>docker container run  -d         # 容器将在后台运行，而不是在当前终端窗口中占用控制权</p>
+</li>
+<li><p>docker container run -w  路径      #着当你在容器内运行命令时，默认的当前目录将是你指定的目录。</p>
+</li>
+</ul>
 
-<h1 style="display: none">有灯就有人</h1>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2026/02/03/docker%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%89%E8%A3%85/" target="_self">
-          docker二进制部署
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2026/02/03/docker%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%89%E8%A3%85/" target="_self">
-        <div>
-          docker部署123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657- 基于脚本一键部署docker环境	1.一键部署docker[root@docker102 ~]# ./install-docker.sh i.....Created sy
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-02-03 18:00" pubdate>
-              2026-02-03
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/docker/">#docker</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2026/01/17/io%E5%BC%82%E5%B8%B8/" target="_self">
-          mysql-io异常
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2026/01/17/io%E5%BC%82%E5%B8%B8/" target="_self">
-        <div>
-          1）IO线程异常：connecting&#x2F;noconnecting：始终无法实现主从建立连接  连接地址、端口、用户、密码信息不对可能会导致连接异常； 防火墙安全策略阻止连接建立、网络通讯配置异常影响连接建立； 到达数据库服务连接数上限，造成主从连接产生异常；  ⭐⭐⭐出现2003错误⭐⭐⭐Last_IO_Errno: 2003Last_IO_Error: error connecting
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-01-17 17:00" pubdate>
-              2026-01-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/mysql/" class="category-chain-item">mysql</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/mysql/">#mysql</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2026/01/17/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%87%BA%E7%8E%B013314/" target="_self">
-          数据库出现13314
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2026/01/17/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%87%BA%E7%8E%B013314/" target="_self">
-        <div>
-          ⭐⭐⭐出现13114错误⭐⭐⭐Last_IO_Errno: 13114Last_IO_Error: Got fatal error 1236 from master when reading data from binary log: ‘Could not open log file’恢复主库binlog文件信息⭐⭐⭐出现13117错误⭐⭐⭐Last_IO_Errno: 13117Last_IO_
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-01-17 17:00" pubdate>
-              2026-01-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/mysql/" class="category-chain-item">mysql</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/mysql/">#mysql</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/05/16/ansible%E7%9A%84%E4%BD%BF%E7%94%A8/" target="_self">
-          ansible的使用与批量部署
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/05/16/ansible%E7%9A%84%E4%BD%BF%E7%94%A8/" target="_self">
-        <div>
-          ansible1.首先安装12345678910111213141516171819202122231.安装[root@ansible:~]#apt install -y python3-pip install sshpass		# ansible基于密码连接需要使用[root@ansible:~]#sudo apt install -y python3-pip   #python3-pip 是安
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-05-16 13:00" pubdate>
-              2025-05-16
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/ansible/" class="category-chain-item">ansible</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/ansible/">#ansible</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/02/02/docker%E5%AE%9E%E7%8E%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F/" target="_self">
-          docker实现科学上网
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/02/docker%E5%AE%9E%E7%8E%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F/" target="_self">
-        <div>
-          docker实现科学上网拉取镜像1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768#我使用的是clash实现科学上网  这种办法只适用于学习- docker实现翻墙拉取官方镜像	1.修改docke
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-02-02 19:00" pubdate>
-              2025-02-02
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/docker/">#docker</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/02/02/docker%E5%91%BD%E4%BB%A4/" target="_self">
-          docker命令大全
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/02/docker%E5%91%BD%E4%BB%A4/" target="_self">
-        <div>
-          镜像的基础管理: *****  docker image ls 镜像名字            #查看镜像列表  docker image rm 镜像名字            #删除镜像 -f强制删除  docker image pull   docker image save   -o  包的名字  镜像名字 #导出镜像  docker image save    -o
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-02-02 17:00" pubdate>
-              2025-02-02
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/docker/">#docker</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-
-
-
-
+                
               </div>
-            </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%B9%E5%99%A8/" class="category-chain-item">容器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/docker/" class="print-no-link">#docker</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>docker命令大全</div>
+      <div>http://example.com/2025/02/02/docker命令/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>朱</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年2月2日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
           </div>
         </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/02/02/docker%E5%AE%9E%E7%8E%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F/" title="docker实现科学上网">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">docker实现科学上网</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
       </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
     
 
     
@@ -769,6 +668,99 @@ window.onload = function() {
 
 
 
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
 
   <script  src="/js/local-search.js" ></script>
 
