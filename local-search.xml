@@ -29,11 +29,36 @@
   
   
   <entry>
+    <title>mysql的官方8.0版本文档位置</title>
+    <link href="/2026/02/06/mysql%E7%9A%84%E5%AE%98%E6%96%B9%E4%BD%8D%E7%BD%AE/"/>
+    <url>/2026/02/06/mysql%E7%9A%84%E5%AE%98%E6%96%B9%E4%BD%8D%E7%BD%AE/</url>
+    
+    <content type="html"><![CDATA[<p>位置: <a href="https://dev.mysql.com/doc/refman/8.0/en/date-and-time-type-syntax.html">https://dev.mysql.com/doc/refman/8.0/en/date-and-time-type-syntax.html</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>mysql</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>mysql</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>mysql-io异常</title>
     <link href="/2026/01/17/io%E5%BC%82%E5%B8%B8/"/>
     <url>/2026/01/17/io%E5%BC%82%E5%B8%B8/</url>
     
-    <content type="html"><![CDATA[<p>1）IO线程异常：connecting&#x2F;no<br>connecting：始终无法实现主从建立连接</p><ul><li>连接地址、端口、用户、密码信息不对可能会导致连接异常；</li><li>防火墙安全策略阻止连接建立、网络通讯配置异常影响连接建立；</li><li>到达数据库服务连接数上限，造成主从连接产生异常；</li></ul><p>⭐⭐⭐出现2003错误⭐⭐⭐<br>Last_IO_Errno: 2003<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#x72;&#x65;&#x70;&#108;&#x40;&#x31;&#48;&#x2e;&#48;&#46;&#48;&#x2e;&#53;&#49;">&#x72;&#x65;&#x70;&#108;&#x40;&#x31;&#48;&#x2e;&#48;&#46;&#48;&#x2e;&#53;&#49;</a>:3306’ - retry-time: 10 retries: 3 message: Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>mysql -urepl -p123456 -h10.0.0.51 -P3306<br>mysql: [Warning] Using a password on the command line interface can be insecure.<br>ERROR 2003 (HY000): Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>###解决办法<br>#先停掉  从数据库<br>stop slave;<br>#进入从数据库<br>reset slave all;                        – 清除主从配置信息<br>#进入从数据库<br>select * from mysql.slave_master_info;  – 显示内容为空<br>#在db02中输入   用户  binlog的位置  同步  </p><p>CHANGE MASTER TO<br>MASTER_HOST&#x3D;’10.0.0.51’,<br>MASTER_PORT&#x3D;3306,<br>MASTER_USER&#x3D;’repl’,<br>MASTER_PASSWORD&#x3D;’123456’,<br>MASTER_LOG_FILE&#x3D;’mysql-bin.000035’,    — 同步位置获取正确<br>MASTER_LOG_POS&#x3D;357,                    — 同步位置获取正确<br>MASTER_CONNECT_RETRY&#x3D;10;</p><p>mysql&gt; start slave ;       —启动一下<br>mysql&gt; show slave status\G;  —查看一下<br>⭐⭐⭐连接数自己该多少自己看着办⭐⭐⭐<br>max_connections   — 表示数据库默认会话连接上限（151）（2000-3000-硬件性能高  500-1000-硬件性能低）         #连接数自己该多少自己看着办<br>Last_IO_Errno: 1040<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#x72;&#x65;&#112;&#108;&#x40;&#x31;&#48;&#46;&#48;&#46;&#x30;&#x2e;&#53;&#49;">&#x72;&#x65;&#112;&#108;&#x40;&#x31;&#48;&#46;&#48;&#46;&#x30;&#x2e;&#53;&#49;</a>:3307’ - retry-time: 10 retries: 1 message: Too many connections   ###达到连接上限<br>###解决办法:<br>自己改达到连接上限</p><h2 id="IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）"><a href="#IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）" class="headerlink" title="IO线程异常no：不能接收binlog 不能保存binlogIO线程异常：可能导致异常原因：- IO线程在请求日志信息失败，有可能日志信息被无意清理了；- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）"></a>IO线程异常<br>no：不能接收binlog 不能保存binlog<br>IO线程异常：<br>可能导致异常原因：<br>- IO线程在请求日志信息失败，有可能日志信息被无意清理了；<br>- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）</h2>]]></content>
+    <content type="html"><![CDATA[<p>1）IO线程异常：connecting&#x2F;no<br>connecting：始终无法实现主从建立连接</p><ul><li>连接地址、端口、用户、密码信息不对可能会导致连接异常；</li><li>防火墙安全策略阻止连接建立、网络通讯配置异常影响连接建立；</li><li>到达数据库服务连接数上限，造成主从连接产生异常；</li></ul><p>⭐⭐⭐出现2003错误⭐⭐⭐<br>Last_IO_Errno: 2003<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#x72;&#101;&#112;&#x6c;&#x40;&#49;&#48;&#46;&#x30;&#x2e;&#x30;&#46;&#x35;&#x31;">&#x72;&#101;&#112;&#x6c;&#x40;&#49;&#48;&#46;&#x30;&#x2e;&#x30;&#46;&#x35;&#x31;</a>:3306’ - retry-time: 10 retries: 3 message: Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>mysql -urepl -p123456 -h10.0.0.51 -P3306<br>mysql: [Warning] Using a password on the command line interface can be insecure.<br>ERROR 2003 (HY000): Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>###解决办法<br>#先停掉  从数据库<br>stop slave;<br>#进入从数据库<br>reset slave all;                        – 清除主从配置信息<br>#进入从数据库<br>select * from mysql.slave_master_info;  – 显示内容为空<br>#在db02中输入   用户  binlog的位置  同步  </p><p>CHANGE MASTER TO<br>MASTER_HOST&#x3D;’10.0.0.51’,<br>MASTER_PORT&#x3D;3306,<br>MASTER_USER&#x3D;’repl’,<br>MASTER_PASSWORD&#x3D;’123456’,<br>MASTER_LOG_FILE&#x3D;’mysql-bin.000035’,    — 同步位置获取正确<br>MASTER_LOG_POS&#x3D;357,                    — 同步位置获取正确<br>MASTER_CONNECT_RETRY&#x3D;10;</p><p>mysql&gt; start slave ;       —启动一下<br>mysql&gt; show slave status\G;  —查看一下<br>⭐⭐⭐连接数自己该多少自己看着办⭐⭐⭐<br>max_connections   — 表示数据库默认会话连接上限（151）（2000-3000-硬件性能高  500-1000-硬件性能低）         #连接数自己该多少自己看着办<br>Last_IO_Errno: 1040<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#114;&#101;&#x70;&#x6c;&#x40;&#49;&#x30;&#46;&#48;&#x2e;&#48;&#x2e;&#53;&#x31;">&#114;&#101;&#x70;&#x6c;&#x40;&#49;&#x30;&#46;&#48;&#x2e;&#48;&#x2e;&#53;&#x31;</a>:3307’ - retry-time: 10 retries: 1 message: Too many connections   ###达到连接上限<br>###解决办法:<br>自己改达到连接上限</p><h2 id="IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）"><a href="#IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）" class="headerlink" title="IO线程异常no：不能接收binlog 不能保存binlogIO线程异常：可能导致异常原因：- IO线程在请求日志信息失败，有可能日志信息被无意清理了；- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）"></a>IO线程异常<br>no：不能接收binlog 不能保存binlog<br>IO线程异常：<br>可能导致异常原因：<br>- IO线程在请求日志信息失败，有可能日志信息被无意清理了；<br>- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）</h2>]]></content>
     
     
     <categories>
