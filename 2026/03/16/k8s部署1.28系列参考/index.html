@@ -1,0 +1,771 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+<head>
+<head>
+  <!-- 猫抓特效样式 -->
+  <style>
+    .cat-scratch {
+      position: fixed !important;
+      font-size: 30px !important;
+      color: #ff6699 !important;
+      transform: scale(0);
+      animation: scratch-animation 0.8s ease-out;
+      pointer-events: none;
+      z-index: 999999 !important;
+    }
+    @keyframes scratch-animation {
+      0% { transform: scale(0) rotate(0deg); opacity: 1; }
+      50% { transform: scale(1.5) rotate(15deg); opacity: 0.8; }
+      100% { transform: scale(2) rotate(0deg); opacity: 0; }
+    }
+  </style>
+
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <!-- 其他原有代码 -->
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/images/favicon.ico">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="朱">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="部署containerd + K8s 1.28系列1.系统更新与依赖安装12apt update &amp;&amp; apt upgrade -yapt install -y apt-transport-https ca-certificates curl gnupg lsb-release net-tools  2.关闭swap1234567[root@master231 ~]# swapof">
+<meta property="og:type" content="article">
+<meta property="og:title" content="部署k8s1.28系列参考">
+<meta property="og:url" content="http://example.com/2026/03/16/k8s%E9%83%A8%E7%BD%B21.28%E7%B3%BB%E5%88%97%E5%8F%82%E8%80%83/index.html">
+<meta property="og:site_name" content="有灯就有人">
+<meta property="og:description" content="部署containerd + K8s 1.28系列1.系统更新与依赖安装12apt update &amp;&amp; apt upgrade -yapt install -y apt-transport-https ca-certificates curl gnupg lsb-release net-tools  2.关闭swap1234567[root@master231 ~]# swapof">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-16T12:32:42.000Z">
+<meta property="article:modified_time" content="2026-03-16T12:32:42.000Z">
+<meta property="article:author" content="朱">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>部署k8s1.28系列参考 - 有灯就有人</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/.cat-scratch%20%7B%0A%20%20position:%20fixed%20!important;%20%20/*%20%EF%BF%BD%20!important%20:6%1FH%20*/%0A%20%20font-size:%2030px%20!important;%20%20/*%20%3E'%00%EF%BF%BD%0C%EF%BF%BD%EF%BF%BD%13%0B0%20*/%0A%20%20color:%20#ff6699%20!important;%20%20%20/*%20%EF%BF%BDr%EF%BF%BD%3E%3C%20*/%0A%20%20transform:%20scale(0);%0A%20%20animation:%20scratch-animation%200.8s%20ease-out;%0A%20%20pointer-events:%20none;%0A%20%20z-index:%20999999%20!important;%20%20/*%20%EF%BF%BD%EF%BF%BDB%EF%BF%BD%0C%7FM%EF%BF%BDn!%20*/%0A%7D%0A@keyframes%20scratch-animation%20%7B%0A%20%200%25%20%7B%20transform:%20scale(0)%20rotate(0deg);%20opacity:%201;%20%7D%0A%20%2050%25%20%7B%20transform:%20scale(1.5)%20rotate(15deg);%20opacity:%200.8;%20%7D%0A%20%20100%25%20%7B%20transform:%20scale(2)%20rotate(0deg);%20opacity:%200;%20%7D%0A%7D%0A.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="部署k8s1.28系列参考"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-03-16 20:32" pubdate>
+          2026年3月16日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          43 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">部署k8s1.28系列参考</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="部署containerd-K8s-1-28系列"><a href="#部署containerd-K8s-1-28系列" class="headerlink" title="部署containerd + K8s 1.28系列"></a>部署containerd + K8s 1.28系列</h1><h3 id="1-系统更新与依赖安装"><a href="#1-系统更新与依赖安装" class="headerlink" title="1.系统更新与依赖安装"></a>1.系统更新与依赖安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">apt update &amp;&amp; apt upgrade -y<br>apt install -y apt-transport-https ca-certificates curl gnupg lsb-release net-tools<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-关闭swap"><a href="#2-关闭swap" class="headerlink" title="2.关闭swap"></a>2.关闭swap</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@master231 ~]# swapoff -a<br>[root@master231 ~]# sed -i <span class="hljs-string">&#x27;/swap/s/^/#/&#x27;</span> /etc/fstab<br>[root@master231 ~]# free -h<br>               total        used        free      shared  buff/cache   available<br>Mem:           5.4Gi       387Mi       1.3Gi       1.0Mi       3.7Gi       4.7Gi<br>Swap:             0B          0B          0B<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-加载内核模块-配置网络"><a href="#3-加载内核模块-配置网络" class="headerlink" title="3.加载内核模块+配置网络"></a>3.加载内核模块+配置网络</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#加载内核overlay</span><br>modprobe overlay<br><span class="hljs-comment">#加载内核模块br_netfilter</span><br>modprobe br_netfilter<br><span class="hljs-comment">#写入k8s必须的3个内核参数  #网桥流量走 iptables 规则。IPv6 网桥流量也走防火墙规则，IP 转发。开启让 Pod 之间、Pod 和外网能通信</span><br><span class="hljs-built_in">cat</span> &gt; /etc/sysctl.d/k8s.conf &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string">net.bridge.bridge-nf-call-iptables  = 1</span><br><span class="hljs-string">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="hljs-string">net.ipv4.ip_forward                 = 1</span><br><span class="hljs-string">EOF</span><br><span class="hljs-comment">#让参数生效</span><br>sysctl --system<br></code></pre></td></tr></table></figure>
+
+<h3 id="4-安装containerd"><a href="#4-安装containerd" class="headerlink" title="4.安装containerd"></a>4.安装containerd</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@master231 ~]# install -m 0755 -d /etc/apt/keyrings<br>[root@master231 ~]# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg<br><span class="hljs-comment">#添加 Docker源</span><br>[root@master231 ~]# <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;deb [arch=<span class="hljs-subst">$(dpkg --print-architecture)</span> signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu <span class="hljs-subst">$(lsb_release -cs)</span> stable&quot;</span> | <span class="hljs-built_in">tee</span> /etc/apt/sources.list.d/docker.list<br><span class="hljs-comment">#更新源并安装 containerd</span><br>apt update<br>apt install -y containerd.io<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-配置-containerd"><a href="#5-配置-containerd" class="headerlink" title="5.配置 containerd"></a>5.配置 containerd</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 生成默认配置</span><br>containerd config default &gt; /etc/containerd/config.toml<br><span class="hljs-comment"># 修改 Cgroup 驱动为 systemd（与 K8s 兼容）</span><br>sed -i <span class="hljs-string">&#x27;s/SystemdCgroup = false/SystemdCgroup = true/&#x27;</span> /etc/containerd/config.toml<br><span class="hljs-comment"># 重启并设置自启</span><br>systemctl restart containerd<br>systemctl <span class="hljs-built_in">enable</span> containerd<br><span class="hljs-comment"># 验证状态</span><br>systemctl status containerd --no-pager<br></code></pre></td></tr></table></figure>
+
+<h3 id="6-添加k8s阿里云源"><a href="#6-添加k8s阿里云源" class="headerlink" title="6.添加k8s阿里云源"></a>6.添加k8s阿里云源</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -fsSL https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | gpg --dearmor -o /etc/apt/keyrings/k8s-key.gpg<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;deb [signed-by=/etc/apt/keyrings/k8s-key.gpg] https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main&quot;</span> | <span class="hljs-built_in">tee</span> /etc/apt/sources.list.d/k8s.list<br></code></pre></td></tr></table></figure>
+
+<h3 id="7-安装-kubeadm-kubelet-kubectl"><a href="#7-安装-kubeadm-kubelet-kubectl" class="headerlink" title="7.安装 kubeadm&#x2F;kubelet&#x2F;kubectl"></a>7.安装 kubeadm&#x2F;kubelet&#x2F;kubectl</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">apt update<br><span class="hljs-comment"># 安装指定版本（1.28.2，可按需调整）</span><br>apt install -y kubelet=1.28.2-00 kubeadm=1.28.2-00 kubectl=1.28.2-00<br><span class="hljs-comment"># 锁定版本（防止自动更新）</span><br>apt-mark hold kubelet kubeadm kubectl<br><span class="hljs-comment"># 验证版本</span><br>kubeadm version<br></code></pre></td></tr></table></figure>
+
+<h3 id="8-master初始化集群"><a href="#8-master初始化集群" class="headerlink" title="8.master初始化集群"></a>8.master初始化集群</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubeadm init \<br>  --apiserver-advertise-address=&lt;Master节点IP&gt; \  <span class="hljs-comment"># 替换为 Master 实际IP</span><br>  --image-repository registry.aliyuncs.com/google_containers \  <span class="hljs-comment"># 阿里云镜像源</span><br>  --service-cidr=10.96.0.0/12 \  <span class="hljs-comment"># Service 网段（固定推荐值）</span><br>  --pod-network-cidr=192.168.0.0/16  <span class="hljs-comment"># Pod 网段（适配 Calico）</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="9-配置kubectl客户端"><a href="#9-配置kubectl客户端" class="headerlink" title="9.配置kubectl客户端"></a>9.配置kubectl客户端</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> -p <span class="hljs-variable">$HOME</span>/.kube<br><span class="hljs-built_in">cp</span> /etc/kubernetes/admin.conf <span class="hljs-variable">$HOME</span>/.kube/config<br><span class="hljs-built_in">chown</span> $(<span class="hljs-built_in">id</span> -u):$(<span class="hljs-built_in">id</span> -g) <span class="hljs-variable">$HOME</span>/.kube/config<br><span class="hljs-comment"># 验证配置</span><br>kubectl get nodes  <span class="hljs-comment"># 此时 Master 节点状态为 NotReady（未装网络插件）</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="10-复制最后输出的-kubeadm-join-命令"><a href="#10-复制最后输出的-kubeadm-join-命令" class="headerlink" title="10.复制最后输出的 kubeadm join 命令"></a>10.复制最后输出的 kubeadm join 命令</h3><h3 id="11-worker加入集群"><a href="#11-worker加入集群" class="headerlink" title="11.worker加入集群"></a>11.worker加入集群</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">粘贴你的<span class="hljs-built_in">join</span>命令<br></code></pre></td></tr></table></figure>
+
+<h3 id="12-安装网络插件calico"><a href="#12-安装网络插件calico" class="headerlink" title="12.安装网络插件calico"></a>12.安装网络插件calico</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 部署 Calico（适配 192.168.0.0/16 网段）</span><br>kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.3/manifests/calico.yaml<br><span class="hljs-comment"># 等待 2-3 分钟，验证网络插件状态</span><br>kubectl get pods -n kube-system -l k8s-app=calico-node<br></code></pre></td></tr></table></figure>
+
+<h3 id="13-查看结果"><a href="#13-查看结果" class="headerlink" title="13.查看结果"></a>13.查看结果</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@master231 ~]# kubectl get node<br>NAME        STATUS   ROLES           AGE   VERSION<br>master231   Ready    control-plane   22m   v1.28.15<br>worker232   Ready    &lt;none&gt;          21m   v1.28.15<br>worker233   Ready    &lt;none&gt;          21m   v1.28.15<br></code></pre></td></tr></table></figure>
+
+<h3 id="14-查看K8s-核心组件"><a href="#14-查看K8s-核心组件" class="headerlink" title="14.查看K8s 核心组件"></a>14.查看K8s 核心组件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@master231 ~]# kubectl get pods -n kube-system<br>NAME                                       READY   STATUS    RESTARTS   AGE<br>calico-kube-controllers-85bc9f8447-bcp5d   1/1     Running   0          14m<br>calico-node-jk964                          1/1     Running   0          14m<br>calico-node-kqhww                          1/1     Running   0          82s<br>calico-node-pg269                          1/1     Running   0          14m<br>coredns-66f779496c-dzhwt                   1/1     Running   0          21m<br>coredns-66f779496c-f8z4t                   1/1     Running   0          21m<br>etcd-master231                             1/1     Running   0          21m<br>kube-apiserver-master231                   1/1     Running   0          21m<br>kube-controller-manager-master231          1/1     Running   0          21m<br>kube-proxy-4l42q                           1/1     Running   0          19m<br>kube-proxy-lt5p8                           1/1     Running   0          82s<br>kube-proxy-r4qwn                           1/1     Running   0          21m<br>kube-scheduler-master231                   1/1     Running   0          21m<br>[root@master231 ~]# kubectl get pods -A --field-selector=spec.nodeName=master231<br>NAMESPACE     NAME                                       READY   STATUS    RESTARTS   AGE<br>kube-system   calico-kube-controllers-85bc9f8447-bcp5d   1/1     Running   0          14m<br>kube-system   calico-node-jk964                          1/1     Running   0          14m<br>kube-system   coredns-66f779496c-dzhwt                   1/1     Running   0          21m<br>kube-system   coredns-66f779496c-f8z4t                   1/1     Running   0          21m<br>kube-system   etcd-master231                             1/1     Running   0          21m<br>kube-system   kube-apiserver-master231                   1/1     Running   0          21m<br>kube-system   kube-controller-manager-master231          1/1     Running   0          21m<br>kube-system   kube-proxy-r4qwn                           1/1     Running   0          21m<br>kube-system   kube-scheduler-master231                   1/1     Running   0          21m<br>[root@master231 ~]# kubectl get cs<br>Warning: v1 ComponentStatus is deprecated <span class="hljs-keyword">in</span> v1.19+<br>NAME                 STATUS    MESSAGE   ERROR<br>scheduler            Healthy   ok        <br>controller-manager   Healthy   ok        <br>etcd-0               Healthy   ok  <br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@master231 ~]# netstat -tnulp<br>Active Internet connections (only servers)<br>Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    <br>tcp        0      0 10.0.0.231:2379         0.0.0.0:*               LISTEN      53248/etcd          <br>tcp        0      0 10.0.0.231:2380         0.0.0.0:*               LISTEN      53248/etcd          <br>tcp        0      0 127.0.0.1:35383         0.0.0.0:*               LISTEN      51010/containerd    <br>tcp        0      0 127.0.0.1:2379          0.0.0.0:*               LISTEN      53248/etcd          <br>tcp        0      0 127.0.0.1:2381          0.0.0.0:*               LISTEN      53248/etcd          <br>tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      20517/systemd-resol <br>tcp        0      0 127.0.0.1:10248         0.0.0.0:*               LISTEN      53478/kubelet       <br>tcp        0      0 127.0.0.1:10249         0.0.0.0:*               LISTEN      53564/kube-proxy    <br>tcp        0      0 127.0.0.1:10259         0.0.0.0:*               LISTEN      53411/kube-schedule <br>tcp        0      0 127.0.0.1:10257         0.0.0.0:*               LISTEN      53400/kube-controll <br>tcp        0      0 127.0.0.1:9099          0.0.0.0:*               LISTEN      54353/calico-node   <br>tcp        0      0 0.0.0.0:179             0.0.0.0:*               LISTEN      54597/bird          <br>tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      20273/sshd: /usr/sb <br>tcp6       0      0 :::6443                 :::*                    LISTEN      53231/kube-apiserve <br>tcp6       0      0 :::10256                :::*                    LISTEN      53564/kube-proxy    <br>tcp6       0      0 :::10250                :::*                    LISTEN      53478/kubelet       <br>tcp6       0      0 :::22                   :::*                    LISTEN      20273/sshd: /usr/sb <br>udp        0      0 127.0.0.53:53           0.0.0.0:*                           20517/systemd-resol <br><br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/k8s/" class="print-no-link">#k8s</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>部署k8s1.28系列参考</div>
+      <div>http://example.com/2026/03/16/k8s部署1.28系列参考/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>朱</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年3月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/03/10/miller/" title="miller介绍与使用">
+                        <span class="hidden-mobile">miller介绍与使用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span></span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span></span></a> 
+    </div>
+  
+  
+  
+</div>
+
+<script>
+// 软萌小巧猫咪样式（适配12px，无乱码）
+const catPaws = [
+  '˚‧º·(ฅωฅ)‧º·˚',
+  '╭˚ʚෆɞ˚╮',
+  '(๑•̀ᴗ•́)و ̑̑',
+  '=^･ω･^=',
+  'ฅ•ω•ฅ',
+  'ヽ(=^･ω･^=)丿',
+  '๑˃̵ᴗ˂̵๑'
+];
+
+// 页面加载完成后立即绑定事件（去掉多余判断）
+window.onload = function() {
+  // 绑定到 document 上，优先级最高，不拦截任何元素
+  document.onclick = function(e) {
+    // 1. 创建猫咪元素（不管点击什么，先创建特效）
+    let paw = document.createElement('span');
+    paw.innerText = catPaws[Math.floor(Math.random() * catPaws.length)];
+    
+    // 2. 核心样式（12px极致小巧）
+    paw.style.position = 'fixed';
+    paw.style.fontSize = '12px';
+    paw.style.color = '#f997b0';
+    paw.style.left = (e.clientX - 6) + 'px';
+    paw.style.top = (e.clientY - 6) + 'px';
+    paw.style.zIndex = '999999'; // 最高层级，不被遮挡
+    paw.style.pointerEvents = 'none'; // 不影响后续点击
+    paw.style.transform = 'scale(0)';
+    paw.style.animation = 'paw-animation 2.5s ease-out forwards';
+    
+    // 3. 动画样式（2.5秒长停留）
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes paw-animation {
+        0% { transform: scale(0) rotate(0deg); opacity: 0; }
+        10% { transform: scale(1.1) rotate(6deg); opacity: 1; }
+        50% { transform: scale(1.1) rotate(6deg); opacity: 1; }
+        90% { transform: scale(1.2) rotate(0deg); opacity: 0.2; }
+        100% { transform: scale(1.2) rotate(0deg); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // 4. 添加到页面并设置自动删除
+    document.body.appendChild(paw);
+    setTimeout(() => paw.remove(), 2500);
+
+    // 5. 不做任何拦截，让点击的元素正常执行默认行为（跳转/触发事件）
+  };
+};
+</script>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="// 等页面完全加载后再执行（避免加载顺序问题）
+window.onload = function() {
+  document.addEventListener('click', function(e) {
+    // 手动创建元素，简化逻辑
+    let scratch = document.createElement('span');
+    scratch.className = 'cat-scratch';
+    scratch.innerText = '������';  // 固定显示爪印，先排除随机问题
+    // 定位到点击位置（简化计算）
+    scratch.style.left = e.clientX + 'px';
+    scratch.style.top = e.clientY + 'px';
+    // 强制添加到 body 最外层
+    document.body.appendChild(scratch);
+    // 1秒后删除
+    setTimeout(() => {
+      scratch.remove();
+    }, 1000);
+  });
+};
+.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
