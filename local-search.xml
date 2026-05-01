@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>云服务器 CPU 清闲却卡顿？IO 等待才是隐形杀手</title>
+    <link href="/2026/05/01/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8_CPU_%E6%B8%85%E9%97%B2%E5%8D%B4%E5%8D%A1%E9%A1%BF%EF%BC%9FIO_%E7%AD%89%E5%BE%85%E6%89%8D%E6%98%AF%E9%9A%90%E5%BD%A2%E6%9D%80%E6%89%8B/"/>
+    <url>/2026/05/01/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8_CPU_%E6%B8%85%E9%97%B2%E5%8D%B4%E5%8D%A1%E9%A1%BF%EF%BC%9FIO_%E7%AD%89%E5%BE%85%E6%89%8D%E6%98%AF%E9%9A%90%E5%BD%A2%E6%9D%80%E6%89%8B/</url>
+    
+    <content type="html"><![CDATA[<h3 id="云服务器“假死”：CPU-清闲却卡顿？IO也是个问题"><a href="#云服务器“假死”：CPU-清闲却卡顿？IO也是个问题" class="headerlink" title="云服务器“假死”：CPU 清闲却卡顿？IO也是个问题"></a>云服务器“假死”：CPU 清闲却卡顿？IO也是个问题</h3><p>要说诡异场景: 莫过于面对<strong>“CPU 清闲，系统却卡死”</strong></p><p>介绍:  使用 <code>top</code> 看着 CPU 使用率不到 10%，内存也充裕，但服务器负载（Load Average）却飙升到 20+，SSH 登录延迟、命令输入卡顿、业务接口超时。排查一从困惑于“负载高但 CPU 不忙”，到最终用 <code>top</code>、<code>vmstat</code>、<code>iostat</code> 三连击定位到 <strong>D 状态进程</strong>与 <strong>IO 等待</strong>，结果得出：</p><blockquote><p><strong>CPU 清闲不代表系统健康，IO 等待才是隐形杀手。</strong></p></blockquote><hr><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>该实例日常负载稳定在 0.5-1.0 之间，CPU 常年低于 20%。某天，接口响应缓慢，部分请求超时。</p><hr><h3 id="排查过程"><a href="#排查过程" class="headerlink" title="排查过程"></a>排查过程</h3><h4 id="1-查看负载：要爆了"><a href="#1-查看负载：要爆了" class="headerlink" title="1. 查看负载：要爆了"></a>1. 查看负载：要爆了</h4><p>查看系统负载，发现——<code>Load Average</code> 直接飙到了 <strong>23.80</strong>，远超 4 核 CPU 的满载阈值。</p><h4 id="2-查看CPU-，空间还有很多…"><a href="#2-查看CPU-，空间还有很多…" class="headerlink" title="2. 查看CPU ，空间还有很多…"></a>2. 查看CPU ，空间还有很多…</h4><p>按照常规思路，负载高 &#x3D; CPU 忙。我立刻输入 <code>top</code>，发现问题了：</p><ul><li>CPU 使用率最高的进程仅占 3%。</li><li><code>us</code>（用户态）和 <code>sy</code>（内核态）占比极低。</li><li><strong><code>id</code>（空闲率）到了 89%！</strong></li><li>内存使用率仅 40%。</li></ul><p>更有意思的是，此时 SSH 操作已有明显卡顿，输入命令要等 3-5 秒才有反应，系统仿佛死了，但 CPU 却异常清闲。</p><p><strong>核心误区解析：</strong><br>很多人误以为 Load Average 只统计“正在运行的进程”。实际上，它统计的是 <strong>正在运行（R 状态） + 不可中断等待（D 状态）</strong> 的进程总数。CPU 清闲说明没有进程在抢占，但负载飙升意味着有大量进程处于“不可中断等待”——这通常是由 <strong>IO 等待</strong> 引起的。</p><h4 id="3-验证猜测"><a href="#3-验证猜测" class="headerlink" title="3. 验证猜测"></a>3. 验证猜测</h4><p>为了验证猜想，我立刻拿出排查IO故障命令：<code>top</code>、<code>vmstat</code>、<code>iostat</code>。</p><p><strong>top 查进程状态</strong></p><p>分析是否有进程处于D状态(不可中断睡眠) ，cpu占用少，但始终在等待 </p><p>是否有z进程(僵尸进程) </p><p><strong>vmstat 查 IO 等待</strong><br>重点关注 <code>wa</code> 列（IO 等待时间占比）：</p><p><code>wa</code> 列从占用少迅速飙升到 **16%**。这代表 CPU 有 16% 的时间都在干等 IO 完成。虽然 CPU 本身没事干，但系统响应因此变得极慢，负载随之起飞。</p><p><strong>iostat 定位磁盘瓶颈</strong><br>重点关注 <code>%util</code> 列（磁盘繁忙程度）：</p><ul><li><code>%util</code> 达到了 **98.60%**，接近 100% 饱和！</li><li>这意味着阿里云 ECS 的系统盘（vda）IO 已经被打满。</li></ul><hr><h2 id="分析与解决"><a href="#分析与解决" class="headerlink" title="分析与解决"></a>分析与解决</h2><p><strong>故障根因：</strong><br>服务器定时任务触发（日志切割、文件备份），大量小文件同时读写。由于使用的是<strong>普通 SSD 云盘</strong>，IOPS 和吞吐量有限，导致磁盘 IO 被打满。大量进程因等待磁盘响应进入 <strong>D 状态</strong>，堆积后拉高系统负载，最终导致“CPU 清闲但系统卡死”。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>文章</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>问题</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>部署k8s1.28系列参考</title>
     <link href="/2026/03/16/k8s%E9%83%A8%E7%BD%B21.28%E7%B3%BB%E5%88%97%E5%8F%82%E8%80%83/"/>
     <url>/2026/03/16/k8s%E9%83%A8%E7%BD%B21.28%E7%B3%BB%E5%88%97%E5%8F%82%E8%80%83/</url>
@@ -104,31 +129,6 @@
   
   
   <entry>
-    <title>docker的官方文档与dockerfile的参考</title>
-    <link href="/2026/02/06/docker%E7%9A%84%E5%AE%98%E6%96%B9%E4%BD%8D%E7%BD%AE%E4%B8%8Edockerfile%E7%9A%84%E5%8F%82%E8%80%83/"/>
-    <url>/2026/02/06/docker%E7%9A%84%E5%AE%98%E6%96%B9%E4%BD%8D%E7%BD%AE%E4%B8%8Edockerfile%E7%9A%84%E5%8F%82%E8%80%83/</url>
-    
-    <content type="html"><![CDATA[<p>内容</p><p>位置: <a href="https://docs.docker.com/reference/dockerfile">https://docs.docker.com/reference/dockerfile</a></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>docker</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>docker</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>elastic的官方文档</title>
     <link href="/2026/02/06/elatic%E7%9A%84%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/"/>
     <url>/2026/02/06/elatic%E7%9A%84%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/</url>
@@ -154,11 +154,36 @@
   
   
   <entry>
+    <title>docker的官方文档与dockerfile的参考</title>
+    <link href="/2026/02/06/docker%E7%9A%84%E5%AE%98%E6%96%B9%E4%BD%8D%E7%BD%AE%E4%B8%8Edockerfile%E7%9A%84%E5%8F%82%E8%80%83/"/>
+    <url>/2026/02/06/docker%E7%9A%84%E5%AE%98%E6%96%B9%E4%BD%8D%E7%BD%AE%E4%B8%8Edockerfile%E7%9A%84%E5%8F%82%E8%80%83/</url>
+    
+    <content type="html"><![CDATA[<p>内容</p><p>位置: <a href="https://docs.docker.com/reference/dockerfile">https://docs.docker.com/reference/dockerfile</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>docker</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>docker</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>mysql-io异常</title>
     <link href="/2026/01/17/io%E5%BC%82%E5%B8%B8/"/>
     <url>/2026/01/17/io%E5%BC%82%E5%B8%B8/</url>
     
-    <content type="html"><![CDATA[<p>1）IO线程异常：connecting&#x2F;no<br>connecting：始终无法实现主从建立连接</p><ul><li>连接地址、端口、用户、密码信息不对可能会导致连接异常；</li><li>防火墙安全策略阻止连接建立、网络通讯配置异常影响连接建立；</li><li>到达数据库服务连接数上限，造成主从连接产生异常；</li></ul><p>⭐⭐⭐出现2003错误⭐⭐⭐<br>Last_IO_Errno: 2003<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#114;&#101;&#112;&#x6c;&#x40;&#x31;&#48;&#46;&#x30;&#46;&#48;&#46;&#53;&#x31;">&#114;&#101;&#112;&#x6c;&#x40;&#x31;&#48;&#46;&#x30;&#46;&#48;&#46;&#53;&#x31;</a>:3306’ - retry-time: 10 retries: 3 message: Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>mysql -urepl -p123456 -h10.0.0.51 -P3306<br>mysql: [Warning] Using a password on the command line interface can be insecure.<br>ERROR 2003 (HY000): Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>###解决办法<br>#先停掉  从数据库<br>stop slave;<br>#进入从数据库<br>reset slave all;                        – 清除主从配置信息<br>#进入从数据库<br>select * from mysql.slave_master_info;  – 显示内容为空<br>#在db02中输入   用户  binlog的位置  同步  </p><p>CHANGE MASTER TO<br>MASTER_HOST&#x3D;’10.0.0.51’,<br>MASTER_PORT&#x3D;3306,<br>MASTER_USER&#x3D;’repl’,<br>MASTER_PASSWORD&#x3D;’123456’,<br>MASTER_LOG_FILE&#x3D;’mysql-bin.000035’,    — 同步位置获取正确<br>MASTER_LOG_POS&#x3D;357,                    — 同步位置获取正确<br>MASTER_CONNECT_RETRY&#x3D;10;</p><p>mysql&gt; start slave ;       —启动一下<br>mysql&gt; show slave status\G;  —查看一下<br>⭐⭐⭐连接数自己该多少自己看着办⭐⭐⭐<br>max_connections   — 表示数据库默认会话连接上限（151）（2000-3000-硬件性能高  500-1000-硬件性能低）         #连接数自己该多少自己看着办<br>Last_IO_Errno: 1040<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#x72;&#x65;&#112;&#108;&#64;&#49;&#48;&#x2e;&#48;&#46;&#x30;&#46;&#53;&#49;">&#x72;&#x65;&#112;&#108;&#64;&#49;&#48;&#x2e;&#48;&#46;&#x30;&#46;&#53;&#49;</a>:3307’ - retry-time: 10 retries: 1 message: Too many connections   ###达到连接上限<br>###解决办法:<br>自己改达到连接上限</p><h2 id="IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）"><a href="#IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）" class="headerlink" title="IO线程异常no：不能接收binlog 不能保存binlogIO线程异常：可能导致异常原因：- IO线程在请求日志信息失败，有可能日志信息被无意清理了；- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）"></a>IO线程异常<br>no：不能接收binlog 不能保存binlog<br>IO线程异常：<br>可能导致异常原因：<br>- IO线程在请求日志信息失败，有可能日志信息被无意清理了；<br>- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）</h2>]]></content>
+    <content type="html"><![CDATA[<p>1）IO线程异常：connecting&#x2F;no<br>connecting：始终无法实现主从建立连接</p><ul><li>连接地址、端口、用户、密码信息不对可能会导致连接异常；</li><li>防火墙安全策略阻止连接建立、网络通讯配置异常影响连接建立；</li><li>到达数据库服务连接数上限，造成主从连接产生异常；</li></ul><p>⭐⭐⭐出现2003错误⭐⭐⭐<br>Last_IO_Errno: 2003<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#114;&#101;&#x70;&#108;&#x40;&#x31;&#48;&#x2e;&#x30;&#46;&#48;&#46;&#x35;&#x31;">&#114;&#101;&#x70;&#108;&#x40;&#x31;&#48;&#x2e;&#x30;&#46;&#48;&#46;&#x35;&#x31;</a>:3306’ - retry-time: 10 retries: 3 message: Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>mysql -urepl -p123456 -h10.0.0.51 -P3306<br>mysql: [Warning] Using a password on the command line interface can be insecure.<br>ERROR 2003 (HY000): Can’t connect to MySQL server on ‘10.0.0.51:3306’ (111)<br>###解决办法<br>#先停掉  从数据库<br>stop slave;<br>#进入从数据库<br>reset slave all;                        – 清除主从配置信息<br>#进入从数据库<br>select * from mysql.slave_master_info;  – 显示内容为空<br>#在db02中输入   用户  binlog的位置  同步  </p><p>CHANGE MASTER TO<br>MASTER_HOST&#x3D;’10.0.0.51’,<br>MASTER_PORT&#x3D;3306,<br>MASTER_USER&#x3D;’repl’,<br>MASTER_PASSWORD&#x3D;’123456’,<br>MASTER_LOG_FILE&#x3D;’mysql-bin.000035’,    — 同步位置获取正确<br>MASTER_LOG_POS&#x3D;357,                    — 同步位置获取正确<br>MASTER_CONNECT_RETRY&#x3D;10;</p><p>mysql&gt; start slave ;       —启动一下<br>mysql&gt; show slave status\G;  —查看一下<br>⭐⭐⭐连接数自己该多少自己看着办⭐⭐⭐<br>max_connections   — 表示数据库默认会话连接上限（151）（2000-3000-硬件性能高  500-1000-硬件性能低）         #连接数自己该多少自己看着办<br>Last_IO_Errno: 1040<br>Last_IO_Error: error connecting to master ‘<a href="mailto:&#x72;&#x65;&#112;&#108;&#64;&#x31;&#48;&#46;&#48;&#46;&#48;&#x2e;&#x35;&#x31;">&#x72;&#x65;&#112;&#108;&#64;&#x31;&#48;&#46;&#48;&#46;&#48;&#x2e;&#x35;&#x31;</a>:3307’ - retry-time: 10 retries: 1 message: Too many connections   ###达到连接上限<br>###解决办法:<br>自己改达到连接上限</p><h2 id="IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）"><a href="#IO线程异常no：不能接收binlog-不能保存binlogIO线程异常：可能导致异常原因：-IO线程在请求日志信息失败，有可能日志信息被无意清理了；-IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server-id-server-uuid）" class="headerlink" title="IO线程异常no：不能接收binlog 不能保存binlogIO线程异常：可能导致异常原因：- IO线程在请求日志信息失败，有可能日志信息被无意清理了；- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）"></a>IO线程异常<br>no：不能接收binlog 不能保存binlog<br>IO线程异常：<br>可能导致异常原因：<br>- IO线程在请求日志信息失败，有可能日志信息被无意清理了；<br>- IO线程在请求日志信息失败，有可能主从配置的标识信息重复冲突了；（server_id  &#x2F; server_uuid）</h2>]]></content>
     
     
     <categories>

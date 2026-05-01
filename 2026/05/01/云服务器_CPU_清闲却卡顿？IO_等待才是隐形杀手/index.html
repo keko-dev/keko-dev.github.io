@@ -42,21 +42,32 @@
   <meta name="author" content="朱">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="website">
-<meta property="og:title" content="归档">
-<meta property="og:url" content="http://example.com/archives/index.html">
+    <meta name="description" content="云服务器“假死”：CPU 清闲却卡顿？IO也是个问题要说诡异场景: 莫过于面对“CPU 清闲，系统却卡死” 介绍:  使用 top 看着 CPU 使用率不到 10%，内存也充裕，但服务器负载（Load Average）却飙升到 20+，SSH 登录延迟、命令输入卡顿、业务接口超时。排查一从困惑于“负载高但 CPU 不忙”，到最终用 top、vmstat、iostat 三连击定位到 D 状态进程与">
+<meta property="og:type" content="article">
+<meta property="og:title" content="云服务器 CPU 清闲却卡顿？IO 等待才是隐形杀手">
+<meta property="og:url" content="http://example.com/2026/05/01/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8_CPU_%E6%B8%85%E9%97%B2%E5%8D%B4%E5%8D%A1%E9%A1%BF%EF%BC%9FIO_%E7%AD%89%E5%BE%85%E6%89%8D%E6%98%AF%E9%9A%90%E5%BD%A2%E6%9D%80%E6%89%8B/index.html">
 <meta property="og:site_name" content="有灯就有人">
+<meta property="og:description" content="云服务器“假死”：CPU 清闲却卡顿？IO也是个问题要说诡异场景: 莫过于面对“CPU 清闲，系统却卡死” 介绍:  使用 top 看着 CPU 使用率不到 10%，内存也充裕，但服务器负载（Load Average）却飙升到 20+，SSH 登录延迟、命令输入卡顿、业务接口超时。排查一从困惑于“负载高但 CPU 不忙”，到最终用 top、vmstat、iostat 三连击定位到 D 状态进程与">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-05-01T12:13:43.000Z">
+<meta property="article:modified_time" content="2026-05-01T12:14:54.711Z">
 <meta property="article:author" content="朱">
+<meta property="article:tag" content="问题">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>归档 - 有灯就有人</title>
+  <title>云服务器 CPU 清闲却卡顿？IO 等待才是隐形杀手 - 有灯就有人</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
 
@@ -110,7 +121,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 60vh;">
+<div class="header-inner" style="height: 70vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -216,9 +227,49 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="归档"></span>
+            <span id="subtitle" data-typed-text="云服务器 CPU 清闲却卡顿？IO 等待才是隐形杀手"></span>
           
         </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-05-01 20:13" pubdate>
+          2026年5月1日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
 
         
       </div>
@@ -234,100 +285,214 @@
 
   <main>
     
-      <div class="container nopadding-x-md">
-        <div id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 16 篇文章</p>
-  <hr>
-  
-  
-    
       
-      <p class="h5">2026</p>
-    
-    <a href="/2026/05/01/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8_CPU_%E6%B8%85%E9%97%B2%E5%8D%B4%E5%8D%A1%E9%A1%BF%EF%BC%9FIO_%E7%AD%89%E5%BE%85%E6%89%8D%E6%98%AF%E9%9A%90%E5%BD%A2%E6%9D%80%E6%89%8B/" class="list-group-item list-group-item-action">
-      <time>05-01</time>
-      <div class="list-group-item-title">云服务器 CPU 清闲却卡顿？IO 等待才是隐形杀手</div>
-    </a>
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">云服务器 CPU 清闲却卡顿？IO 等待才是隐形杀手</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="云服务器“假死”：CPU-清闲却卡顿？IO也是个问题"><a href="#云服务器“假死”：CPU-清闲却卡顿？IO也是个问题" class="headerlink" title="云服务器“假死”：CPU 清闲却卡顿？IO也是个问题"></a>云服务器“假死”：CPU 清闲却卡顿？IO也是个问题</h3><p>要说诡异场景: 莫过于面对<strong>“CPU 清闲，系统却卡死”</strong></p>
+<p>介绍:  使用 <code>top</code> 看着 CPU 使用率不到 10%，内存也充裕，但服务器负载（Load Average）却飙升到 20+，SSH 登录延迟、命令输入卡顿、业务接口超时。排查一从困惑于“负载高但 CPU 不忙”，到最终用 <code>top</code>、<code>vmstat</code>、<code>iostat</code> 三连击定位到 <strong>D 状态进程</strong>与 <strong>IO 等待</strong>，结果得出：</p>
+<blockquote>
+<p><strong>CPU 清闲不代表系统健康，IO 等待才是隐形杀手。</strong></p>
+</blockquote>
+<hr>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>该实例日常负载稳定在 0.5-1.0 之间，CPU 常年低于 20%。某天，接口响应缓慢，部分请求超时。</p>
+<hr>
+<h3 id="排查过程"><a href="#排查过程" class="headerlink" title="排查过程"></a>排查过程</h3><h4 id="1-查看负载：要爆了"><a href="#1-查看负载：要爆了" class="headerlink" title="1. 查看负载：要爆了"></a>1. 查看负载：要爆了</h4><p>查看系统负载，发现——<code>Load Average</code> 直接飙到了 <strong>23.80</strong>，远超 4 核 CPU 的满载阈值。</p>
+<h4 id="2-查看CPU-，空间还有很多…"><a href="#2-查看CPU-，空间还有很多…" class="headerlink" title="2. 查看CPU ，空间还有很多…"></a>2. 查看CPU ，空间还有很多…</h4><p>按照常规思路，负载高 &#x3D; CPU 忙。我立刻输入 <code>top</code>，发现问题了：</p>
+<ul>
+<li>CPU 使用率最高的进程仅占 3%。</li>
+<li><code>us</code>（用户态）和 <code>sy</code>（内核态）占比极低。</li>
+<li><strong><code>id</code>（空闲率）到了 89%！</strong></li>
+<li>内存使用率仅 40%。</li>
+</ul>
+<p>更有意思的是，此时 SSH 操作已有明显卡顿，输入命令要等 3-5 秒才有反应，系统仿佛死了，但 CPU 却异常清闲。</p>
+<p><strong>核心误区解析：</strong><br>很多人误以为 Load Average 只统计“正在运行的进程”。实际上，它统计的是 <strong>正在运行（R 状态） + 不可中断等待（D 状态）</strong> 的进程总数。CPU 清闲说明没有进程在抢占，但负载飙升意味着有大量进程处于“不可中断等待”——这通常是由 <strong>IO 等待</strong> 引起的。</p>
+<h4 id="3-验证猜测"><a href="#3-验证猜测" class="headerlink" title="3. 验证猜测"></a>3. 验证猜测</h4><p>为了验证猜想，我立刻拿出排查IO故障命令：<code>top</code>、<code>vmstat</code>、<code>iostat</code>。</p>
+<p><strong>top 查进程状态</strong></p>
+<p>分析是否有进程处于D状态(不可中断睡眠) ，cpu占用少，但始终在等待 </p>
+<p>是否有z进程(僵尸进程) </p>
+<p><strong>vmstat 查 IO 等待</strong><br>重点关注 <code>wa</code> 列（IO 等待时间占比）：</p>
+<p><code>wa</code> 列从占用少迅速飙升到 **16%**。这代表 CPU 有 16% 的时间都在干等 IO 完成。虽然 CPU 本身没事干，但系统响应因此变得极慢，负载随之起飞。</p>
+<p><strong>iostat 定位磁盘瓶颈</strong><br>重点关注 <code>%util</code> 列（磁盘繁忙程度）：</p>
+<ul>
+<li><code>%util</code> 达到了 **98.60%**，接近 100% 饱和！</li>
+<li>这意味着阿里云 ECS 的系统盘（vda）IO 已经被打满。</li>
+</ul>
+<hr>
+<h2 id="分析与解决"><a href="#分析与解决" class="headerlink" title="分析与解决"></a>分析与解决</h2><p><strong>故障根因：</strong><br>服务器定时任务触发（日志切割、文件备份），大量小文件同时读写。由于使用的是<strong>普通 SSD 云盘</strong>，IOPS 和吞吐量有限，导致磁盘 IO 被打满。大量进程因等待磁盘响应进入 <strong>D 状态</strong>，堆积后拉高系统负载，最终导致“CPU 清闲但系统卡死”。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
   
     
-    <a href="/2026/03/16/k8s%E9%83%A8%E7%BD%B21.28%E7%B3%BB%E5%88%97%E5%8F%82%E8%80%83/" class="list-group-item list-group-item-action">
-      <time>03-16</time>
-      <div class="list-group-item-title">部署k8s1.28系列参考</div>
-    </a>
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%96%87%E7%AB%A0/" class="category-chain-item">文章</a>
   
-    
-    <a href="/2026/03/10/miller/" class="list-group-item list-group-item-action">
-      <time>03-10</time>
-      <div class="list-group-item-title">miller介绍与使用</div>
-    </a>
   
+
+      </span>
     
-    <a href="/2026/03/01/1Panel%E7%9A%84%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8%E4%B8%8E%E9%83%A8%E7%BD%B2%E6%B5%8B%E8%AF%95/" class="list-group-item list-group-item-action">
-      <time>03-01</time>
-      <div class="list-group-item-title">1Panel--服务器运维面板功能等</div>
-    </a>
   
-    
-    <a href="/2026/02/06/ansible%E7%9A%84%E5%AE%98%E6%96%B9%E4%B8%8E%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3%E4%BD%8D%E7%BD%AE/" class="list-group-item list-group-item-action">
-      <time>02-06</time>
-      <div class="list-group-item-title">ansible的官方位置</div>
-    </a>
+</span>
+
+    </div>
   
-    
-    <a href="/2026/02/06/elatic%E7%9A%84%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/" class="list-group-item list-group-item-action">
-      <time>02-06</time>
-      <div class="list-group-item-title">elastic的官方文档</div>
-    </a>
   
-    
-    <a href="/2026/02/06/docker%E7%9A%84%E5%AE%98%E6%96%B9%E4%BD%8D%E7%BD%AE%E4%B8%8Edockerfile%E7%9A%84%E5%8F%82%E8%80%83/" class="list-group-item list-group-item-action">
-      <time>02-06</time>
-      <div class="list-group-item-title">docker的官方文档与dockerfile的参考</div>
-    </a>
-  
-    
-    <a href="/2026/01/17/io%E5%BC%82%E5%B8%B8/" class="list-group-item list-group-item-action">
-      <time>01-17</time>
-      <div class="list-group-item-title">mysql-io异常</div>
-    </a>
-  
-    
-    <a href="/2026/01/17/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%87%BA%E7%8E%B013314/" class="list-group-item list-group-item-action">
-      <time>01-17</time>
-      <div class="list-group-item-title">数据库出现13314</div>
-    </a>
-  
-    
-    <a href="/2026/01/16/mysql%E7%9A%84%E5%AE%98%E6%96%B9%E4%BD%8D%E7%BD%AE/" class="list-group-item list-group-item-action">
-      <time>01-16</time>
-      <div class="list-group-item-title">mysql的官方8.0版本文档位置</div>
-    </a>
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E9%97%AE%E9%A2%98/" class="print-no-link">#问题</a>
+      
+    </div>
   
 </div>
 
 
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/#board">2</a><a class="extend next" rel="next" href="/archives/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
-    </span>
-  </nav>
+              
+  
 
-
-
-
-              </div>
-            </div>
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>云服务器 CPU 清闲却卡顿？IO 等待才是隐形杀手</div>
+      <div>http://example.com/2026/05/01/云服务器_CPU_清闲却卡顿？IO_等待才是隐形杀手/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>朱</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年5月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
           </div>
         </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/03/16/k8s%E9%83%A8%E7%BD%B21.28%E7%B3%BB%E5%88%97%E5%8F%82%E8%80%83/" title="部署k8s1.28系列参考">
+                        <span class="hidden-mobile">部署k8s1.28系列参考</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
       </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
     
 
     
@@ -473,6 +638,99 @@ window.onload = function() {
 
 
 
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
 
   <script  src="/js/local-search.js" ></script>
 
