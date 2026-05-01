@@ -81,7 +81,7 @@
 
 
   
-<link rel="stylesheet" href="/.cat-scratch%20%7B%0A%20%20position:%20fixed%20!important;%20%20/*%20%EF%BF%BD%20!important%20:6%1FH%20*/%0A%20%20font-size:%2030px%20!important;%20%20/*%20%3E'%00%EF%BF%BD%0C%EF%BF%BD%EF%BF%BD%13%0B0%20*/%0A%20%20color:%20#ff6699%20!important;%20%20%20/*%20%EF%BF%BDr%EF%BF%BD%3E%3C%20*/%0A%20%20transform:%20scale(0);%0A%20%20animation:%20scratch-animation%200.8s%20ease-out;%0A%20%20pointer-events:%20none;%0A%20%20z-index:%20999999%20!important;%20%20/*%20%EF%BF%BD%EF%BF%BDB%EF%BF%BD%0C%7FM%EF%BF%BDn!%20*/%0A%7D%0A@keyframes%20scratch-animation%20%7B%0A%20%200%25%20%7B%20transform:%20scale(0)%20rotate(0deg);%20opacity:%201;%20%7D%0A%20%2050%25%20%7B%20transform:%20scale(1.5)%20rotate(15deg);%20opacity:%200.8;%20%7D%0A%20%20100%25%20%7B%20transform:%20scale(2)%20rotate(0deg);%20opacity:%200;%20%7D%0A%7D%0A.css">
+<link rel="stylesheet" href="/.cat-scratch%20%7B%0A%20%20position:%20fixed%20!important;%0A%20%20font-size:%2030px%20!important;%0A%20%20color:%20#ff6699%20!important;%0A%20%20pointer-events:%20none;%0A%20%20z-index:%20999999%20!important;%0A%20%20content:%20%22%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD%22;%0A%20%20animation:%20scratch-animation%200.8s%20ease-out;%0A%7D%0A@keyframes%20scratch-animation%20%7B%0A%20%200%25%20%7B%20transform:%20scale(0)%20rotate(0deg);%20opacity:%201;%20%7D%0A%20%2050%25%20%7B%20transform:%20scale(1.5)%20rotate(15deg);%20opacity:%200.8;%20%7D%0A%20%20100%25%20%7B%20transform:%20scale(2)%20rotate(0deg);%20opacity:%200;%20%7D%0A%7D%0A.css">
 
 
 
@@ -420,25 +420,7 @@ window.onload = function() {
 
 
   
-<script src="// 等页面完全加载后再执行（避免加载顺序问题）
-window.onload = function() {
-  document.addEventListener('click', function(e) {
-    // 手动创建元素，简化逻辑
-    let scratch = document.createElement('span');
-    scratch.className = 'cat-scratch';
-    scratch.innerText = '������';  // 固定显示爪印，先排除随机问题
-    // 定位到点击位置（简化计算）
-    scratch.style.left = e.clientX + 'px';
-    scratch.style.top = e.clientY + 'px';
-    // 强制添加到 body 最外层
-    document.body.appendChild(scratch);
-    // 1秒后删除
-    setTimeout(() => {
-      scratch.remove();
-    }, 1000);
-  });
-};
-.js"></script>
+<script src="/document.addEventListener('DOMContentLoaded',%20function()%20%7B%0A%20%20document.body.addEventListener('click',%20function(e)%20%7B%0A%20%20%20%20var%20scratch%20=%20document.createElement('span');%0A%20%20%20%20scratch.className%20=%20'cat-scratch';%0A%20%20%20%20scratch.style.left%20=%20(e.clientX%20+%20window.scrollX)%20+%20'px';%0A%20%20%20%20scratch.style.top%20=%20(e.clientY%20+%20window.scrollY)%20+%20'px';%0A%20%20%20%20document.body.appendChild(scratch);%0A%20%20%20%20setTimeout(()%20=%3E%20%7B%20scratch.remove();%20%7D,%20800);%0A%20%20%7D);%0A%7D);%0A.js"></script>
 
 
 
